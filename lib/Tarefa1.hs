@@ -15,3 +15,9 @@ colisoesParede = undefined
 
 colisoesPersonagens :: Personagem -> Personagem -> Bool
 colisoesPersonagens = undefined
+
+--teste
+
+
+
+--teste
