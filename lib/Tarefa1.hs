@@ -21,3 +21,6 @@ colisoesPersonagens = undefined
 
 
 --teste
+
+ok :: Hitbox -> Hitbox
+ok = undefined
