@@ -10,5 +10,25 @@ module Tarefa2 where
 
 import LI12324
 
+data Jogo =
+  Jogo
+    { mapa          :: Mapa -- ^ mapa do jogo
+    , inimigos      :: [Personagem] -- ^ lista de inimigos no mapa
+    , colecionaveis :: [(Colecionavel, Posicao)] -- ^ lista de colecionaveis espalhados pelo mapa
+    , jogador       :: Personagem -- ^ o jogador
+    }
+  deriving (Eq, Read, Show)
+
 valida :: Jogo -> Bool
-valida = undefined
+valida jogo    | inimigos ressalta == True && jogador ressalata == False = False 
+               | jogador posicao == inimigos posicao = False
+               | = False
+               | inimigos vida \= 1 = False
+               |= False
+               |= False
+               |= False
+               | otherwise = True
+
+
+               
+               
