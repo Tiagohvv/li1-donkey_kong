@@ -85,10 +85,56 @@ espacoBloco _ [] = []
 espacoBloco (x,y) (h:t) = ((posicaoBlocos (x,y) (Bloco Mapa)), (posicaoBlocos (x + 1,y + 1) (Bloco Mapa))) : espacoBloco (x,y) t 
 
 criaHitbox :: Posicao -> Personagem -> Hitbox
-criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (frst tamanho Personagem )), (y + (snd tamanho Personagem )))
+criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (fst (tamanho Personagem ))), (y + (snd (tamanho Personagem ))))
 
 
 
+
+
+
+validaesc :: Mapa -> Bool
+validaesc  | posicaoBlocosesc (0,0) (Bloco Mapa)
+
+validacoisas :: [Double] -> [Double] -> Bool
+validacoisas (h:t) (x:y) | h == x = False
+                         | h /= x = validacoisas t (x:y)
+                         | otherwise = True  
+
+posicaoBlocosesc :: Posicao -> [[Bloco]] -> [Posicao]
+posicaoBlocosesc _ [] = []
+posicaoBlocosesc (x, y) (h:t) = posicaoesc (x, y) h ++ posicaoesc (x, y + 1) t
+
+
+posicaoesc :: Posicao -> [Bloco] -> [Posicao]
+posicaoesc _ [] = []
+posicaoesc (x, y) (h:t)
+    | h == Escada = (x, y) : posicaoesc (x + 1, y) t
+    | otherwise = posicaoesc (x + 1, y) t
+
+
+posicaoBlocosplat :: Posicao -> [[Bloco]] -> [Posicao]
+posicaoBlocosplat _ [] = []
+posicaoBlocosplat (x, y) (h:t) = posicaoplat (x, y) h ++ posicaoplat (x, y + 1) t
+
+
+posicaoplat :: Posicao -> [Bloco] -> [Posicao]
+posicaoplat _ [] = []
+posicaoplat (x, y) (h:t)
+    | h == Plataforma = (x, y) : posicaoplat (x + 1, y) t
+    | otherwise = posicaoplat (x + 1, y) t
+
+
+
+posicaoBlocosal :: Posicao -> [[Bloco]] -> [Posicao]
+posicaoBlocosal _ [] = []
+posicaoBlocosal (x, y) (h:t) = posicaoal (x, y) h ++ posicaoal (x, y + 1) t
+
+
+posicaoal :: Posicao -> [Bloco] -> [Posicao]
+posicaoal _ [] = []
+posicaoal (x, y) (h:t)
+    | h == Alcapao = (x, y) : posicaoal (x + 1, y) t
+    | otherwise = posicaoal (x + 1, y) t
 
 
 
