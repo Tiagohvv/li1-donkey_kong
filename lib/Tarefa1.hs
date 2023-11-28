@@ -7,21 +7,19 @@ Copyright   : José Miguel Torrinha Paredes Pinho Sampaio <a106908@alunos.uminho
 Módulo para a realização da Tarefa 1 de LI1 em 2023/24.
 -}
 module Tarefa1 where
-
 import LI12324
 import Data.Fixed (E0)
 
-{--colisoesParede :: Mapa -> Personagem -> Bool
+colisoesParede :: Mapa -> Personagem -> Bool
 colisoesParede (Bloco Mapa) Posicao Personagem | x == limite || y == limite = True
-                                               | posicaoBlocos 
+                                               | sobreposicao (posicao personagem) (espacoBloco (0,0) (Bloco Mapa))
                                                | otherwise = False
-                                               
-
 
 
 colisoesPersonagens :: Personagem -> [Personagem] -> Bool
-colisoesPersonagens | sobreposicao ((personagem posicao), (personagem posicao))  = True 
-                    | otherwise = False -}
+colisoesPersonagens | sobreposicao ((posicao personagem), (posicao inimigos)) = True 
+                    | otherwise = False
+
 
 {-teste
 type Hitbox = (Posicao, Posicao)
@@ -30,18 +28,67 @@ type Hitbox = (Posicao, Posicao)
 -- | Posicao no 'Mapa'.
 type Posicao = (Double, Double)
 
+--}
 
+
+
+{-| Função que testa se duas Hitboxs estão a colidir.
+
+== Exemplos
+
+>>> sobreposicao ((1,1),(2,2)) ((1.5,1.5),(3.5,3.5))
+True
 -}
 
 sobreposicao :: Hitbox -> Hitbox -> Bool
-sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8))| (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7<= p3 ) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8<= p4 ) = True
-                                                |otherwise = False 
+sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7<= p3 ) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8<= p4 ) = True
+                                                 | otherwise = False 
 
-posicaoBlocos :: (Int, Int) -> [Bloco] -> [Posicao]
-posicaoBlocos (x,y) (h:t) = posicaoBlocop (x,y) h : posicaoBlocos (x,y+1) t
-                                 where x == 0 && y == 0
 
-posicaoBlocop :: (Int, Int) -> [Bloco] -> [Posicao]
-posicaoBlocop (x,y) (h:t) |h == V = posicaoBlocop (x+1,y) t
-                          |otherwise = (x,y) : posicaoBlocop (x+1,y) t
-                              where x == 0 && y == 0
+
+{-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todos os Blocos.
+
+== Exemplos
+
+>>> posicaoBlocos (0,0) [[Vazio,Escada,Plataforma],[Vazio,Escada,Plataforma]]
+[(1.0,0.0),(2.0,0.0),(1.0,1.0),(2.0,1.0)]
+-}
+posicaoBlocos :: Posicao -> [[Bloco]] -> [Posicao]
+posicaoBlocos _ [] = []
+posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) t
+
+
+
+{-| Função que dada uma posição inicial e uma lista de Blocos(o que corresponde a uma linha de Blocos) dá a posição desses Blocos.
+
+== Exemplos
+
+>>> posicaoBlocop (0,0) [Vazio,Escada,Plataforma]
+[(1.0,0.0),(2.0,0.0)]
+-}
+posicaoBlocop :: Posicao -> [Bloco] -> [Posicao]
+posicaoBlocop _ [] = []
+posicaoBlocop (x, y) (h:t)
+    | h == Vazio = posicaoBlocop (x + 1, y) t
+    | otherwise = (x, y) : posicaoBlocop (x + 1, y) t
+
+
+{-| Função que dada uma posição inicial e uma lista de Blocos dá a posição desses Blocos.
+
+== Exemplos
+
+>>> 
+
+-}
+espacoBloco :: Posicao -> [[Bloco]] -> [Hitbox]
+espacoBloco _ [] = []
+espacoBloco (x,y) (h:t) = ((posicaoBlocos (x,y) (Bloco Mapa)), (posicaoBlocos (x + 1,y + 1) (Bloco Mapa))) : espacoBloco (x,y) t 
+
+criaHitbox :: Posicao -> Personagem -> Hitbox
+criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (frst tamanho Personagem )), (y + (snd tamanho Personagem )))
+
+
+
+
+
+
