@@ -92,16 +92,37 @@ criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (fst (tamanho Personagem ))),
 
 
 
-validaesc :: Mapa -> Bool
-validaesc  | posicaoBlocosesc (0,0) (Bloco Mapa)
 
-validacoisas :: [Double] -> [Double] -> Bool
-validacoisas (h:t) (x:y) | h == x = False
-                         | h /= x = validacoisas t (x:y)
-                         | otherwise = True  
+
+
+----- validar escadas
+
+
+validaesc :: Mapa -> Bool
+validaesc (Bloco Mapa) | validacoisasal (posicaoBlocosesc) (posicaoBlocosplat) == False
+                       | validacoisas (posicaoBlocosesc) (posicaoBlocosplat) == False
+                       | otherwise = True  
+
+validacoisas :: [Posicao] -> [Posicao] -> Bool
+validacoisasposicaoBlocos _ [] = []
+validacoisas ((h,r):t) ((x:z):y) | (h,r) == (x,(z+1)) = False
+                                 | otherwise = validacoisas t ((x:z):y)
+                                 
+
+validacoisas :: [Posicao] -> [Posicao] -> Bool
+posicaoBlocos _ [] = []
+validacoisas ((h,r):t) ((x:z):y) | (h,r) == (x,z) = False
+                                 | (h,r) /= (x,z)  = validacoisas t ((x:z):y)
+                                 | otherwise = True
+
+validacoisasal :: [Posicao] -> [Posicao] -> Bool
+posicaoBlocos _ [] = []
+validacoisasal ((h,r):t) ((x:z):y) | (h,r) == (x,z) = False
+                                 | (h,r) /= (x,z)  = validacoisasal t ((x:z):y)
+                                 | otherwise = True 
 
 posicaoBlocosesc :: Posicao -> [[Bloco]] -> [Posicao]
-posicaoBlocosesc _ [] = []
+posicaoBlocos _ [] = []
 posicaoBlocosesc (x, y) (h:t) = posicaoesc (x, y) h ++ posicaoesc (x, y + 1) t
 
 
@@ -136,5 +157,8 @@ posicaoal (x, y) (h:t)
     | h == Alcapao = (x, y) : posicaoal (x + 1, y) t
     | otherwise = posicaoal (x + 1, y) t
 
-
+validacoisas :: [Double] -> [Double] -> Bool
+validacoisas (h:t) (x:y) | h == x = False
+                         | h /= x = validacoisas t (x:y)
+                         | otherwise = True  
 

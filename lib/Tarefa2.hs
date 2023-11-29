@@ -20,6 +20,7 @@ data Jogo =
   deriving (Eq, Read, Show)
 
 valida :: Jogo -> Bool
+<<<<<<< HEAD
 valida jogo    | inimigos ressalta == True && jogador ressalata == False = False 
                | jogador posicao == inimigos posicao = False
                | = False
@@ -32,3 +33,16 @@ valida jogo    | inimigos ressalta == True && jogador ressalata == False = False
 
                
                
+=======
+valida jogo = undefined
+
+--validaressalta :: Personagem -> [Personagem] -> Bool 
+--validaressalta jog = not (ressalta jog) &&  
+
+validachao :: Mapa -> Bool 
+validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
+
+
+
+
+>>>>>>> 7c680f362ebaa823421dca5a9277366c5603c4e4

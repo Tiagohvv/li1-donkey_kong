@@ -14,3 +14,11 @@ import LI12324
 
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
 atualiza = undefined
+
+
+reage :: Event -> Estado -> IO Estado
+reage (EventKey (SpecialKey KeyUp) Down _ _) (Jogo (Cobra orientacao posicoes) maca, imgs) = return $ (Jogo (Cobra Norte posicoes) maca, imgs)
+reage (EventKey (SpecialKey KeyDown) Down _ _) (Jogo (Cobra orientacao posicoes) maca, imgs) = return $ (Jogo (Cobra Sul posicoes) maca, imgs)
+reage (EventKey (SpecialKey KeyLeft) Down _ _) (Jogo (Cobra orientacao posicoes) maca, imgs) = return $ (Jogo (Cobra Oeste posicoes) maca, imgs)
+reage (EventKey (SpecialKey KeyRight) Down _ _) (Jogo (Cobra orientacao posicoes) maca, imgs) = return $ (Jogo (Cobra Este posicoes) maca, imgs)
+reage _ e = return e
