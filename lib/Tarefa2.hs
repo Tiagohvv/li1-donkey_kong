@@ -11,4 +11,14 @@ module Tarefa2 where
 import LI12324
 
 valida :: Jogo -> Bool
-valida = undefined
+valida jogo = undefined
+
+--validaressalta :: Personagem -> [Personagem] -> Bool 
+--validaressalta jog = not (ressalta jog) &&  
+
+validachao :: Mapa -> Bool 
+validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
+
+
+
+
