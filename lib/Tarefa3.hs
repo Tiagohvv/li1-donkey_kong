@@ -145,7 +145,7 @@ atualizarPosicao personagem (vx, vy) =
 
 aplicaGravidade :: Mapa -> Personagem -> Personagem 
 aplicaGravidade mp p | blocoNaPosicao  mp p == Just -- = novaPosicao p
-                     | otherwise = p
+                     | otherwise = p    
 
 novaPosicao :: Posicao -> Posicao 
 novaPosicao (x,y) = undefined

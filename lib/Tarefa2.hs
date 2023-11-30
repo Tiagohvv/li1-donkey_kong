@@ -29,8 +29,7 @@ valida jogo    | ressalta inimigos == True &&  ressalata jogador == False = Fals
                |= False
                | otherwise = True
 
---validaressalta :: Personagem -> [Personagem] -> Bool 
---validaressalta jog = not (ressalta jog) &&  
+
 
 validachao :: Mapa -> Bool 
 validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
