@@ -9,18 +9,18 @@ Módulo para a realização da Tarefa 1 de LI1 em 2023/24.
 module Tarefa1 where
 import LI12324
 import Data.Fixed (E0)
+import Tarefa3
 
 
-
-colisoesParede :: Mapa -> Personagem -> Bool
-colisoesParede (Bloco Mapa) posicao Personagem | x == 100 || y == 100 = True
-                                               | sobreposicao (posicao personagem) (espacoBloco (0,0) (Bloco Mapa)) = True
-                                               | otherwise = False
+colisoesParede :: [[Bloco]] -> Personagem -> Bool
+colisoesParede (mapaTeste) per2 | (posicao per2) == (100.0,0.0) || (posicao per2) == (100.0,0.0) = True
+                                | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) = True
+                                | otherwise = False
 
 
 colisoesPersonagens :: Personagem -> [Personagem] -> Bool
-colisoesPersonagens | colisao ((posicao personagem), (posicao inimigos)) = True 
-                    | otherwise = False
+colisoesPersonagens per2 [per,per3] | colisao (criaHitbox per2) [(criaHitbox (per)), (criaHitbox (per3))] = True 
+                                    | otherwise = False
 
 
 {-teste
@@ -58,7 +58,7 @@ True
 colisao :: Hitbox -> [Hitbox] -> Bool
 colisao _ [] = True
 colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) == False = False
-                                                | otherwise = colisaoc ((p1,p2),(p3,p4)) t
+                                                | otherwise = colisao ((p1,p2),(p3,p4)) t
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todos os Blocos.
 
@@ -69,7 +69,7 @@ colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4))
 -}
 posicaoBlocos :: Posicao -> [[Bloco]] -> [Posicao]
 posicaoBlocos _ [] = []
-posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) t
+posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 10) t
 
 
 
@@ -83,30 +83,34 @@ posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) 
 posicaoBlocop :: Posicao -> [Bloco] -> [Posicao]
 posicaoBlocop _ [] = []
 posicaoBlocop (x, y) (h:t)
-    | h == Vazio = posicaoBlocop (x + 1, y) t
-    | otherwise = (x, y) : posicaoBlocop (x + 1, y) t
+    | h == Vazio = posicaoBlocop (x + 10, y) t
+    | otherwise = (x, y) : posicaoBlocop (x + 10, y) t
 
 
-{-| Função que dada uma posição inicial e uma lista de blocos dá a hitbox desses blocos
 
-== Exemplos
-
->>> 
-
--}
-espacoBloco :: Posicao -> [[Bloco]] -> [Hitbox]
-espacoBloco _ [] = []
-espacoBloco (x,y) (h:t) = ((posicaoBlocos (x,y) (Bloco Mapa)), (posicaoBlocos (x + 1,y + 1) (Bloco Mapa))) : espacoBloco (x,y) t 
-
-
-{-| Função que dada a posiçao de uma personagem e o seu tamanho cria a sua hitbox.
+{-| Função que dada uma posição cria a Hitbox de um Bloco
 
 == Exemplos
 
->>> 
+>>>espacoBloco [(0.0,0.0),(10.0,10.0),(10.0,0.0),(20.0,10.0)]
+
+[((0.0,0.0),(10.0,10.0)),((10.0,10.0),(20.0,20.0)),((10.0,0.0),(20.0,10.0)),((20.0,10.0),(30.0,20.0))]
+-}
+
+espacoBloco :: [Posicao] -> [Hitbox]
+espacoBloco [] = []
+espacoBloco ((x,y):t) = ((x,y), (x + 10,y + 10)) : espacoBloco t 
+
+
+{-| Função que dada uma personagem cria a sua hitbox.
+
+== Exemplos
+
+>>> criaHitbox per2
+((3.0,4.0),(13.0,24.0))
 
 -}
-criaHitbox :: Posicao -> Personagem -> Hitbox
-criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (fst (tamanho Personagem ))), (y + (snd (tamanho Personagem ))))
 
+criaHitbox :: Personagem -> Hitbox
+criaHitbox per2 = ((fst (posicao per2),snd (posicao per2)), (fst (posicao per2) + (fst (tamanho per2)), snd (posicao per2) + (snd (tamanho per2))))
 

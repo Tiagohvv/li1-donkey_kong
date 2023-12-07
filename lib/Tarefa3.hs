@@ -39,7 +39,7 @@ per = Personagem {
    tamanho = (10,20),
    ressalta = True,
    tipo = Fantasma,
-   vida = 2
+   vida = 1
 }
 per2 = Personagem {
    posicao = (2,2),
@@ -69,7 +69,8 @@ gethitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tama
 getdamagehitbox :: Personagem -> Hitbox
 getdamagehitbox p 
   | direcao p == Este = getdamagehitboxAuxEste (gethitbox p)
-  | direcao p == Oeste = getdamagehitboxAuxOeste (gethitbox p)
+  | direcao p == Oeste = getda
+}magehitboxAuxOeste (gethitbox p)
   | direcao p == Norte = getdamagehitboxAuxNorte (gethitbox p)
   | direcao p == Sul =  getdamagehitboxAuxSul (gethitbox p)
 

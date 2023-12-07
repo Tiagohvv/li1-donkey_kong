@@ -10,6 +10,18 @@ module Tarefa2 where
 import Tarefa1
 import LI12324
 
+mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5)
+    [[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
+    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+    ]
+
+
+-- | Definição base de um 'Jogo'.
 data Jogo =
   Jogo
     { mapa          :: Mapa -- ^ mapa do jogo
@@ -19,26 +31,71 @@ data Jogo =
     }
   deriving (Eq, Read, Show)
 
+inimigo :: [Personagem]
+inimigo = [Personagem {velocidade = (0,0), 
+                    tipo = Fantasma, 
+                    emEscada = False, 
+                    vida = 0, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (-5,-5), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Oeste}]
+
+per = Personagem {
+   posicao = (5,5),
+   tamanho = (10,20),
+   ressalta = True,
+   tipo = Fantasma,
+   vida = 1
+}
+
+
+
+per2 = Personagem {
+   posicao = (2,2),
+   tamanho = (3,3),
+   ressalta = False,
+   tipo = Jogador
+}
+
+
+
+per3 = Personagem {
+   posicao = (4,4),
+   tamanho = (3,3),
+   ressalta = False,
+   tipo = Jogador
+}
+
+player :: Personagem
+player = Personagem {velocidade = (0,0),
+                     tipo = Jogador,
+                     posicao = (3,4),
+                     direcao = Este,
+                     tamanho = (1,1),
+                     emEscada = False,
+                     ressalta = False,
+                     vida = 3,
+                     pontos = 0,
+                     aplicaDano = (True,0.0)
+                     }
+
 valida :: Jogo -> Bool
-valida jogo    | ressalta inimigos == True &&  ressalata jogador == False = False 
-               | posicao jogador == posicao inimigos = False
-               | validaesc == False = False
-               | vida inimigos \= 1 = False
-               | colisoesParede == False = False
-               |= False
-               |= False
+valida jogo    | ressalta per == True && ressalta per3 == True && ressalta per2 == False = False 
+               | posicao per2 == posicao per3 || posicao per2 == posicao per = False
+               | validaesc (mapaTeste) == False = False
+               | vida per /= 1 || vida per3 /= 1 = False
+               ----- colisoesParede == False = False
                | otherwise = True
 
-
+--validaressalta :: Personagem -> [Personagem] -> Bool 
+--validaressalta jog = not (ressalta jog) &&  
 
 validachao :: Mapa -> Bool 
 validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
 
-
-emBloco :: [Posicao] -> [Posicao] -> Bool
-
-
------ validar escadas(por acabar)
 
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
@@ -49,10 +106,10 @@ emBloco :: [Posicao] -> [Posicao] -> Bool
 -}
 
 
-validaesc :: Mapa -> Bool
-validaesc (Bloco Mapa) | validacoisasal (posicaoBlocosesc) (posicaoBlocosal) == False = False
-                       | validacoisasplat (posicaoBlocosesc) (posicaoBlocosplat) == False = False
-                       | otherwise = True  
+validaesc :: [[Bloco]] -> Bool
+validaesc (mapaTeste) | validaCoisasAl (posicaoBlocosesc (0,0) (mapaTeste)) (posicaoBlocosal (0,0) (mapaTeste)) == False = False
+                      | validaCoisasPlat (posicaoBlocosesc (0,0) (mapaTeste)) (posicaoBlocospl (0,0) (mapaTeste)) == False = False
+                      | otherwise = True  
 
 
                                  
@@ -60,15 +117,18 @@ validaesc (Bloco Mapa) | validacoisasal (posicaoBlocosesc) (posicaoBlocosal) == 
 validaCoisasPlat :: [Posicao] -> [Posicao] -> Bool
 validaCoisasPlat [] [] = True
 validaCoisasPlat [] _ = True
-validaCoisasPlat _ [] = False
+validaCoisasPlat _ [] = True
 validaCoisasPlat ((h,r):t) ((x,z):y) | (h,r) == (x,z+1) || (h,r-1) == (x,z) = validaCoisasPlat t ((x,z):y)
                                      |otherwise = validaCoisasPlat ((h,r):t) y
+
+
+
 
 
 validaCoisasAl :: [Posicao] -> [Posicao] -> Bool
 validaCoisasAl [] [] = True
 validaCoisasAl [] _ = True
-validaCoisasAl _ [] = False
+validaCoisasAl _ [] = True
 validaCoisasAl ((h,r):t) ((x,z):y) | (h,r) /= (x,z+1) && (h,r-1) /= (x,z) = validaCoisasAl t ((x,z):y)
                                    | otherwise = False
 
@@ -101,11 +161,6 @@ posicaoesc _ [] = []
 posicaoesc (x, y) (h:t)
     | h == Escada = (x, y) : posicaoesc (x + 1, y) t
     | otherwise = posicaoesc (x + 1, y) t 
-
-
-
-
-
 
 
 
@@ -168,4 +223,3 @@ posicaopl _ [] = []
 posicaopl (x, y) (h:t)
     | h == Plataforma = (x, y) : posicaopl (x + 1, y) t
     | otherwise = posicaopl (x + 1, y) t 
-
