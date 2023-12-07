@@ -153,7 +153,7 @@ atualizarPosicao personagem (vx, vy) =
   let (x, y) = posicao personagem
   in (x + vx, y + vy)
   -}
-
+{-
 aplicaGravidade :: Mapa -> Personagem -> Personagem 
 aplicaGravidade mp p | blocoNaPosicao  mp p == Just -- = novaPosicao p
                      | otherwise = p    
@@ -175,7 +175,15 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) =
     else Nothing
     where linha = round y
           coluna = round x 
+-}
 
+
+perdevida :: Personagem -> Personagem -> Personagem 
+perdevida Jogador {vida = x} Fantasma = 
+
+
+recolhecolecionavel :: Personagem -> Colecionavel -> Personagem 
+recolhecolecionavel p c = 
 
 
 

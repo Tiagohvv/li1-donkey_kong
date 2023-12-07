@@ -124,5 +124,6 @@ type Semente = Int
 >>> geraAleatorios 10 1
 [3575835729477015470]
 -}
+
 geraAleatorios :: Semente -> Int -> [Int]
 geraAleatorios s c = take c $ randoms (mkStdGen s)

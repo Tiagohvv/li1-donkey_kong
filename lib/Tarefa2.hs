@@ -97,6 +97,11 @@ validachao :: Mapa -> Bool
 validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
 
 
+--emBloco :: [Posicao] -> [Posicao] -> Bool
+
+
+----- validar escadas(por acabar)
+
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
 

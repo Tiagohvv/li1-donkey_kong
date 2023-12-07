@@ -22,6 +22,16 @@ colisoesPersonagens :: Personagem -> [Personagem] -> Bool
 colisoesPersonagens per2 [per,per3] | colisao (criaHitbox per2) [(criaHitbox (per)), (criaHitbox (per3))] = True 
                                     | otherwise = False
 
+--colisoesParede :: Mapa -> Personagem -> Bool
+--colisoesParede (m) Personagem {posicao = (x,y)} | x == 100 || y == 100 = True
+ --                                              | sobreposicao (posicao personagem) (espacoBloco (0,0) (m)) = True
+ --                                              | otherwise = False
+                                            
+
+--colisoesPersonagens :: Personagem -> [Personagem] -> Bool
+--colisoesPersonagens | colisao ((posicao personagem), (posicao inimigos)) = True 
+  --                  | otherwise = False
+
 
 {-teste
 type Hitbox = (Posicao, Posicao)
@@ -43,10 +53,10 @@ True
 -}
 
 sobreposicao :: Hitbox -> Hitbox -> Bool
-sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7<= p3 ) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8<= p4 ) = True
-                                                 | otherwise = False 
+sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
+                                                       | otherwise = False                                                 
 
-{-| Função que testa se duas Hitboxs estão a colidir.
+{-| Função que testa se duas Hitboxs estão a colidir. 
 
 == Exemplos
 
@@ -90,7 +100,7 @@ posicaoBlocop (x, y) (h:t)
 
 {-| Função que dada uma posição cria a Hitbox de um Bloco
 
-== Exemplos
+== Exemplos      
 
 >>>espacoBloco [(0.0,0.0),(10.0,10.0),(10.0,0.0),(20.0,10.0)]
 
@@ -110,6 +120,8 @@ espacoBloco ((x,y):t) = ((x,y), (x + 10,y + 10)) : espacoBloco t
 ((3.0,4.0),(13.0,24.0))
 
 -}
+--criaHitbox :: Posicao -> Personagem -> Hitbox
+--criaHitbox (x,y) personagem = ((x,y), (x + (fst (tamanho personagem ))), (y + (snd (tamanho personagem ))))
 
 criaHitbox :: Personagem -> Hitbox
 criaHitbox per2 = ((fst (posicao per2),snd (posicao per2)), (fst (posicao per2) + (fst (tamanho per2)), snd (posicao per2) + (snd (tamanho per2))))
