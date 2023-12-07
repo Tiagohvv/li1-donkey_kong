@@ -48,6 +48,15 @@ per2 = Personagem {
    tipo = Jogador
 }
 
+
+per3 = Personagem {
+   posicao = (4,4),
+   tamanho = (3,3),
+   ressalta = False,
+   tipo = Jogador
+}
+
+
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
@@ -70,7 +79,8 @@ getdamagehitbox :: Personagem -> Hitbox
 getdamagehitbox p 
   | direcao p == Este = getdamagehitboxAuxEste (gethitbox p)
   | direcao p == Oeste = getda
-}magehitboxAuxOeste (gethitbox p)
+
+damagehitboxAuxOeste (gethitbox p)
   | direcao p == Norte = getdamagehitboxAuxNorte (gethitbox p)
   | direcao p == Sul =  getdamagehitboxAuxSul (gethitbox p)
 
