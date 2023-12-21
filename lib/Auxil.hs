@@ -1,4 +1,4 @@
-module Auxil where
+module Auxiliar where
 
 import LI12324
 

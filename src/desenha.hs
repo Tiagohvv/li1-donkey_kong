@@ -8,4 +8,13 @@ Módulo para a realização de LI1 em 2023/24.
 -}
 module Desenha where
 
-    
+carregaImagens :: Picture -> Picture IO
+carregaImagens = do 
+      escada <- loadBMP "escada.bmp"
+      fantasma <- loadBMP "fantasma.bmp"
+      bloco <- loadBMP "bloco.bmp"
+      mario <- loadBMP "mario2.bmp"
+      surpresa <- loadBMP "untitled.bmp"
+
+
+      

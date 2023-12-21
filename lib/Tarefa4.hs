@@ -9,27 +9,23 @@ Módulo para a realização da Tarefa 4 de LI1 em 2023/24.
 module Tarefa4 where
 
 import Data.Maybe
-import Auxiliar
 import LI12324
 import Data.Bool (Bool)
 
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
-atualiza  acoesInimigos [per,per3] x jogo = 
+atualiza [per,per3] per2 jogo = atualizaPersonagem per2
 
 
-eventHandler :: Event -> Acao -> IO Acao
-eventHandler (EventKey (SpecialKey KeyRight) Down _ _) = return $ Just AndarDireita
-eventHandler (EventKey (SpecialKey KeyRight) Up _ _) = return $ Just Parar
-eventHandler (EventKey (SpecialKey KeyLeft) Down _ _) = return $ Just AndarEsquerda
-eventHandler (EventKey (SpecialKey KeyLeft) Up _ _) = return $ Just Parar
-eventHandler (EventKey (SpecialKey KeyUp) Down _ _) = return $ Just Subir
-eventHandler (EventKey (SpecialKey KeyUp) Up _ _) = return $ Just Parar
-eventHandler (EventKey (SpecialKey KeyDown) Down _ _) = return $ Just Descer
-eventHandler (EventKey (SpecialKey KeyDown) Up _ _) = return $ Just Parar
-eventHandler (EventKey (SpecialKey KeySpace) Down _ _) = return $ Just Saltar
+per2 = Personagem {
+   posicao = (2,2),
+   tamanho = (3,3),
+   ressalta = False,
+   tipo = Jogador
+}
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
 
+    
 == Exemplos
 
 >>> posicaoBlocosesc (0.0,0.0) [[Vazio,Escada,Plataforma],[Vazio,Escada,Plataforma,Alcapao]]
@@ -74,21 +70,6 @@ colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4))
 
 
 
-{-| Função que testa se duas Hitboxs estão a colidir.
-
-== Exemplos
-
->>>
--}
-
-criaHitboxBlocos :: [Posicao] -> [Hitbox]
-criaHitboxBlocos ((x,y):t)= (x +1, y+1) : criaHitboxBlocos t 
-
-
-
-criaHitbox :: Posicao -> Personagem -> Hitbox
-criaHitbox (x,y) tamanho Personagem = ((x,y), (x + (fst (tamanho Personagem ))), (y + (snd (tamanho Personagem ))))
-
 
 {-| Função que testa se duas Hitboxs estão a colidir.
 
@@ -101,18 +82,34 @@ naEscada :: Personagem -> [Posicao] -> Bool
 naEscada (personagem) bloco = colisao (criaHitbox (posicao personagem) (tamanho personagem)) bloco
 
 emAlcapao :: Personagem -> [Posicao] -> Bool
-naAlcapao (personagem) bloco = undefined
+emAlcapao (personagem) bloco = undefined
 
 
-ressaltando :: Personagem -> Maybe Direcao
-ressaltando (inimigos) | ((fst (posicao inimigos)) + (fst (tamanho inimigos))) == 0 = Este
-                       | ((fst (posicao inimigos)) + (fst (tamanho inimigos))) == 100 = Oeste 
+ressaltando :: Personagem -> Maybe Acao
+ressaltando (inimigos) | ((fst (posicao inimigos)) + (fst (tamanho inimigos))) == 0 = Just AndarDireita
+                       | ((fst (posicao inimigos)) + (fst (tamanho inimigos))) == 100 = Just AndarEsquerda 
                        | otherwise = Nothing
 
 
-acoesInimigos :: [Personagem] -> [Maybe Acao]
-acoesInimigos _ [] = []
-acoesInimigos (h:t) | ressaltando h == Este = (direcao h == Este) : acoesInimigos t    
-                    | ressaltando t == Oeste = (direcao h == Oeste) : acoesInimigos t 
-                    | otherwise = Nothing : acoesInimigos t
+{-| Função que testa se duas Hitboxs estão a colidir.
 
+== Exemplos
+
+>>>atualizaPersonagem Just Subir
+Personagem {velocidade = (0.0,0.0), tipo = Jogador, posicao = (3.0,4.0), direcao = Norte, tamanho = (10.0,20.0), emEscada = False, ressalta = False, vida = 3, pontos = 0, aplicaDano = (True,0.0)}
+
+-}
+atualizaPersonagem :: Maybe Acao -> Personagem
+atualizaPersonagem x | x == Just Subir = per2 {direcao = Norte}
+                     | x == Just Descer = per2 {direcao = Sul}
+                     | x == Just AndarDireita = per2 { direcao = Este}
+                     | x == Just AndarEsquerda = per2 { direcao = Oeste}
+                     | x == Just Saltar = per2 {direcao = Norte}
+                     | x == Just Parar = per2 {velocidade = (0.0,0.0)}
+                     | otherwise = per2            
+
+
+atualizaInimigos :: Personagem -> Personagem
+atualizaInimigos x | ressaltando x == Just Subir = x {direcao = Norte}
+                   | ressaltando x == Just Descer = x {direcao = Sul}
+                   | otherwise = per2                                 
