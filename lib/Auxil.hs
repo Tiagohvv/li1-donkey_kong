@@ -1,11 +1,6 @@
-module Auxil where
+module Auxiliar where
 
 import LI12324
-import Tarefa1
-import Tarefa2
-import Tarefa3
-import Tarefa4
-
 
 
 
