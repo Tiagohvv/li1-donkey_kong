@@ -81,14 +81,15 @@ player = Personagem {velocidade = (0,0),
                      pontos = 0,
                      aplicaDano = (True,0.0)
                      }
-
+{-
 valida :: Jogo -> Bool
 valida jogo    | ressalta per == True && ressalta per3 == True && ressalta per2 == False = False 
                | posicao per2 == posicao per3 || posicao per2 == posicao per = False
                | validaesc (mapaTeste) == False = False
                | vida per /= 1 || vida per3 /= 1 = False
                ----- colisoesParede == False = False
-               | otherwise = True
+               | otherwise = True 
+-}               
 
 --validaressalta :: Personagem -> [Personagem] -> Bool 
 --validaressalta jog = not (ressalta jog) &&  

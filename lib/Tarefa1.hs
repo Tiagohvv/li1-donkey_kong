@@ -9,7 +9,6 @@ Módulo para a realização da Tarefa 1 de LI1 em 2023/24.
 module Tarefa1 where
 import LI12324
 import Data.Fixed (E0)
-import Tarefa3
 
 
 colisoesParede :: [[Bloco]] -> Personagem -> Bool

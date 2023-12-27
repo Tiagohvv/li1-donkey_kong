@@ -9,12 +9,12 @@ Módulo para a realização da Tarefa 4 de LI1 em 2023/24.
 module Tarefa4 where
 
 import Data.Maybe
-import Auxiliar
 import LI12324
 import Data.Bool (Bool)
 
+{-
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
-atualiza  acoesInimigos [per,per3] x jogo = 
+atualiza  acoesInimigos [per,per3] x jogo = undefined 
 
 
 eventHandler :: Event -> Acao -> IO Acao
@@ -116,3 +116,4 @@ acoesInimigos (h:t) | ressaltando h == Este = (direcao h == Este) : acoesInimigo
                     | ressaltando t == Oeste = (direcao h == Oeste) : acoesInimigos t 
                     | otherwise = Nothing : acoesInimigos t
 
+-}

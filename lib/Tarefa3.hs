@@ -9,6 +9,9 @@ Módulo para a realização da Tarefa 3 de LI1 em 2023/24.
 module Tarefa3 where
 
 import LI12324
+import Tarefa1 
+import Tarefa2
+import GHC.Base (undefined)
 
 mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5)
     [[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
@@ -167,15 +170,19 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) =
 -}
 
 
-perdevida :: Personagem -> Personagem -> Personagem 
-perdevida Jogador {vida = x} Fantasma = 
+
+--perdevidainimigo :: Personagem -> Personagem -> Personagem 
+--perdevidainimigo (Fantasma {vida = x}) Jogador = if sobreposicao (gethitbox Fantasma) (getdamagehitbox Jogador) == True 
+--                                        then perdevidainimigo Fantasma {vida = x-1} Jogador 
+--                                        else perdevidainimigo Fantasma {vida = x} Jogador
+
 
 
 recolhecolecionavel :: Personagem -> Colecionavel -> Personagem 
-recolhecolecionavel p c = 
+recolhecolecionavel = undefined
 
 
 
 
-movimenta :: Semente -> Tempo -> Jogo -> Jogo
-movimenta = undefined
+--movimenta :: Semente -> Tempo -> Jogo -> Jogo
+--movimenta = undefined
