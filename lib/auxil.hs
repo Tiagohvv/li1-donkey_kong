@@ -7,7 +7,7 @@ import Tarefa3
 import Tarefa4
 
 
-
+{-
 
 sobreposicao :: Hitbox -> Hitbox -> Bool
 sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7<= p3 ) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8<= p4 ) = True
@@ -21,12 +21,12 @@ sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) | (p1 <= p5 && p5 <= p3 || p1 <
 True
 -}
 
-
+{-
 colisao :: Hitbox -> [Hitbox] -> Bool
 colisao _ [] = True
 colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) == False = False
                                                 | otherwise = colisaoc ((p1,p2),(p3,p4)) t
-
+-}
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todos os Blocos.
 
 == Exemplos
@@ -34,9 +34,9 @@ colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4))
 >>> posicaoBlocos (0.0,0.0) [[Vazio,Escada,Plataforma],[Vazio,Escada,Plataforma]]
 [(1.0,0.0),(2.0,0.0),(1.0,1.0),(2.0,1.0)]
 -}
-posicaoBlocos :: Posicao -> [[Bloco]] -> [Posicao]
-posicaoBlocos _ [] = []
-posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) t
+--posicaoBlocos :: Posicao -> [[Bloco]] -> [Posicao]
+--posicaoBlocos _ [] = []
+--posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) t
 
 
 
@@ -158,3 +158,4 @@ posicaopl (x, y) (h:t)
     | h == Plataforma = (x, y) : posicaopl (x + 1, y) t
     | otherwise = posicaopl (x + 1, y) t 
 
+-}

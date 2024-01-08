@@ -9,39 +9,7 @@ Módulo para a realização da Tarefa 2 de LI1 em 2023/24.
 module Tarefa2 where
 import Tarefa1
 import LI12324
-
-mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5)
-    [[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
-    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ]
-
-
--- | Definição base de um 'Jogo'.
-data Jogo =
-  Jogo
-    { mapa          :: Mapa -- ^ mapa do jogo
-    , inimigos      :: [Personagem] -- ^ lista de inimigos no mapa
-    , colecionaveis :: [(Colecionavel, Posicao)] -- ^ lista de colecionaveis espalhados pelo mapa
-    , jogador       :: Personagem -- ^ o jogador
-    }
-  deriving (Eq, Read, Show)
-
-inimigo :: [Personagem]
-inimigo = [Personagem {velocidade = (0,0), 
-                    tipo = Fantasma, 
-                    emEscada = False, 
-                    vida = 0, 
-                    pontos = 0, 
-                    ressalta = True, 
-                    posicao = (-5,-5), 
-                    tamanho = (1,1), 
-                    aplicaDano = (False, 0), 
-                    direcao = Oeste}]
+import Tarefa3 
 
 per = Personagem {
    posicao = (5,5),
@@ -68,19 +36,6 @@ per3 = Personagem {
    ressalta = False,
    tipo = Jogador
 }
-
-player :: Personagem
-player = Personagem {velocidade = (0,0),
-                     tipo = Jogador,
-                     posicao = (3,4),
-                     direcao = Este,
-                     tamanho = (1,1),
-                     emEscada = False,
-                     ressalta = False,
-                     vida = 3,
-                     pontos = 0,
-                     aplicaDano = (True,0.0)
-                     }
 {-
 valida :: Jogo -> Bool
 valida jogo    | ressalta per == True && ressalta per3 == True && ressalta per2 == False = False 
@@ -89,8 +44,7 @@ valida jogo    | ressalta per == True && ressalta per3 == True && ressalta per2 
                | vida per /= 1 || vida per3 /= 1 = False
                ----- colisoesParede == False = False
                | otherwise = True 
--}               
-
+-}
 --validaressalta :: Personagem -> [Personagem] -> Bool 
 --validaressalta jog = not (ressalta jog) &&  
 

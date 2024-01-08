@@ -10,20 +10,23 @@ module Tarefa3 where
 
 import LI12324
 import Tarefa1 
-import Tarefa2
 import GHC.Base (undefined)
 
 mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5)
     [[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Escada, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Alcapao, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
     ]
 
+jogoexp :: Jogo 
+jogoexp = Jogo mapaTeste inimigo colec player 
 
+colec :: [(Colecionavel, Posicao)]
+colec = [(Moeda, (3,1)), (Martelo, (1,1))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
@@ -32,42 +35,44 @@ inimigo = [Personagem {velocidade = (0,0),
                     vida = 0, 
                     pontos = 0, 
                     ressalta = True, 
-                    posicao = (-5,-5), 
+                    posicao = (1,1), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Oeste}]
+                    direcao = Oeste}   
+                    ,
+                    
+          Personagem {velocidade = (0,0), 
+                    tipo = Fantasma, 
+                    emEscada = False, 
+                    vida = 2, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (2,4), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Este}          
+                    ]
 
-per = Personagem {
-   posicao = (5,5),
-   tamanho = (10,20),
-   ressalta = True,
-   tipo = Fantasma,
-   vida = 1
-}
-per2 = Personagem {
-   posicao = (2,2),
-   tamanho = (3,3),
-   ressalta = False,
-   tipo = Jogador
-}
 
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
-                     posicao = (3,4),
+                     posicao = (1,1),
                      direcao = Este,
-                     tamanho = (1,1),
+                     tamanho = (2,2),
                      emEscada = False,
                      ressalta = False,
                      vida = 3,
                      pontos = 0,
-                     aplicaDano = (True,0.0)
+                     aplicaDano = (False,0.0)
                      }
 
 gethitbox :: Personagem -> Hitbox 
 gethitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
 
-
+gethitboxcol :: Posicao -> Hitbox 
+gethitboxcol l = ((fst l - fst tamanho/2, snd l - snd tamanho/2) ,(fst l + fst tamanho /2, snd l + snd tamanho/2))
+                      where tamanho = (1,1)
 
 getdamagehitbox :: Personagem -> Hitbox
 getdamagehitbox p 
@@ -88,10 +93,15 @@ getdamagehitboxAuxNorte ((x,y),(x2,y2)) = ((x,y+(y2-y)),(x2,y2+(y2-y)))
 getdamagehitboxAuxSul :: Hitbox -> Hitbox 
 getdamagehitboxAuxSul ((x,y),(x2,y2)) = ((x,y-(y2-y)),(x2,y2-(y2-y)))
 
+-- inimigo morre quando a vida chega a 0 
+inimigomorreEMjogo :: Jogo -> Jogo 
+inimigomorreEMjogo j = j {inimigos = inimigomorre (inimigos j)}
+
 
 inimigomorre :: [Personagem] -> [Personagem]
 inimigomorre [] = []
 inimigomorre (h:t)  =  inimigomorreAux h : inimigomorre t
+
 
 inimigomorreAux :: Personagem -> Personagem 
 inimigomorreAux p | tipo p == Fantasma && vida p == 0 = p { posicao = xaupersonagem (posicao p)}
@@ -99,6 +109,8 @@ inimigomorreAux p | tipo p == Fantasma && vida p == 0 = p { posicao = xaupersona
 
 xaupersonagem :: Posicao -> Posicao
 xaupersonagem (x,y) = (x+1000,y+1000) 
+
+
 
 
 gravidadeexiste :: Personagem -> Mapa -> Personagem 
@@ -171,15 +183,68 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) =
 
 
 
---perdevidainimigo :: Personagem -> Personagem -> Personagem 
---perdevidainimigo (Fantasma {vida = x}) Jogador = if sobreposicao (gethitbox Fantasma) (getdamagehitbox Jogador) == True 
---                                        then perdevidainimigo Fantasma {vida = x-1} Jogador 
---                                        else perdevidainimigo Fantasma {vida = x} Jogador
+-- Fantasma perde vida ao ser martelado 
+perdevidainimigoEMjogo :: Jogo -> Jogo 
+perdevidainimigoEMjogo j = j {inimigos = perdevidainimigo (inimigos j) (jogador j) } 
+
+perdevidainimigo :: [Personagem] -> Personagem -> [Personagem] 
+perdevidainimigo [] _ = [] 
+perdevidainimigo (ini:inis) j  = if ((aplicaDano j == (True, snd (aplicaDano j))) && (sobreposicao (gethitbox ini) (getdamagehitbox j) == True) )
+                                 then ini {vida = (vida ini)-1} : perdevidainimigo inis j 
+                                 else ini : perdevidainimigo inis j 
+
+   
+
+
+--jogador perde vida ao ser tocado pelo fantasma 
+perdevidaJogadorEMjogo :: Jogo -> Jogo 
+perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (jogador j) (inimigos j) }
 
 
 
-recolhecolecionavel :: Personagem -> Colecionavel -> Personagem 
-recolhecolecionavel = undefined
+perdevidaJogador :: Personagem -> [Personagem] -> Personagem 
+perdevidaJogador j [] = j 
+perdevidaJogador j (ini:inis) | colisoesPersonagens j ini = perdevidaJogador (j {vida = (vida j)-1}) inis 
+                              | otherwise = perdevidaJogador j inis 
+
+
+--recolhecolec :: Personagem -> [Colecionavel] -> Colecionavel 
+--recolhecolec j col | 
+
+
+-- arma o jogador se for martelo e aumenta pontos se for moeda (ainda não desaparece)
+armaEpontosJogadorEMjogo :: Jogo -> Jogo 
+armaEpontosJogadorEMjogo = undefined 
+
+{-
+xaucolec :: Personagem -> [(Colecionavel, Posicao)] -> [(Colecionavel, Posicao)]
+xaucolec j [] = []
+xaucolec j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col)) = (xaupersonagem (snd col)) : xaucolec j cols 
+                      | otherwise = col : xaucolec j cols 
+
+-}
+armaEpontosJogador :: Personagem -> [(Colecionavel, Posicao)] -> Personagem 
+armaEpontosJogador j [] = j 
+armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador (j {aplicaDano = (True, 10)}) cols
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador (j {pontos = (pontos j) +1}) cols  
+                                | otherwise = armaEpontosJogador j cols 
+
+
+
+
+
+pisaalcapao :: Posicao -> Mapa -> Bool 
+pisaalcapao (x,y) a@(Mapa _ _ blocos) | blocoNaPosicao a (x,y+1) == Just Alcapao = True 
+                                      | otherwise = False 
+{-
+pisaalcapaoJogador :: Personagem -> Mapa -> Mapa 
+pisaalcapaoJogador j a@(Mapa _ _ blocos) | j {tipo = Jogador} && pisaalcapao (posicao j) a = trocabloco Alcapao Vazio blocos 
+                                       | otherwise = undefined 
+-}
+trocabloco :: Bloco -> Bloco -> [Bloco] -> [Bloco]
+trocabloco _ _ [] =[]
+trocabloco antigo novo (bloco:resto) | antigo == bloco = novo : trocabloco antigo novo resto
+                                     | otherwise = bloco: trocabloco antigo novo resto
 
 
 

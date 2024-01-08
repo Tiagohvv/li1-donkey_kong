@@ -102,6 +102,7 @@ ressaltando (inimigos) | ((fst (posicao inimigos)) + (fst (tamanho inimigos))) =
 Personagem {velocidade = (0.0,0.0), tipo = Jogador, posicao = (3.0,4.0), direcao = Norte, tamanho = (10.0,20.0), emEscada = False, ressalta = False, vida = 3, pontos = 0, aplicaDano = (True,0.0)}
 
 -}
+{-
 atualizaPersonagem :: Maybe Acao -> Personagem
 atualizaPersonagem x | x == Just Subir = per2 {direcao = Norte}
                      | x == Just Descer = per2 {direcao = Sul}
@@ -110,9 +111,8 @@ atualizaPersonagem x | x == Just Subir = per2 {direcao = Norte}
                      | x == Just Saltar = per2 {direcao = Norte}
                      | x == Just Parar = per2 {velocidade = (0.0,0.0)}
                      | otherwise = per2            
-
-
-atualizaInimigos :: Personagem -> Personagem
-atualizaInimigos x | ressaltando x == Just Subir = x {direcao = Norte}
-                   | ressaltando x == Just Descer = x {direcao = Sul}
-                   | otherwise = per2                                 
+-}
+--atualizaInimigos :: Personagem -> Personagem
+--atualizaInimigos x | ressaltando x == Just Subir = x {direcao = Norte}
+ --                  | ressaltando x == Just Descer = x {direcao = Sul}
+   --                | otherwise = per2                                 
