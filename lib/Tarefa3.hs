@@ -12,16 +12,18 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5)
-    [[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Escada, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Alcapao, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
+mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5) matrizJogoExp
+
+matrizJogoExp :: [[Bloco]]
+matrizJogoExp =[
+     [Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Alcapao, Vazio, Vazio, Vazio, Vazio]
+    ,[Escada, Alcapao, Vazio, Vazio, Alcapao, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
     ]
-
 jogoexp :: Jogo 
 jogoexp = Jogo mapaTeste inimigo colec player 
 
@@ -234,20 +236,52 @@ armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd 
 
 
 pisaalcapao :: Posicao -> Mapa -> Bool 
-pisaalcapao (x,y) a@(Mapa _ _ blocos) | blocoNaPosicao a (x,y+1) == Just Alcapao = True 
-                                      | otherwise = False 
-{-
-pisaalcapaoJogador :: Personagem -> Mapa -> Mapa 
-pisaalcapaoJogador j a@(Mapa _ _ blocos) | j {tipo = Jogador} && pisaalcapao (posicao j) a = trocabloco Alcapao Vazio blocos 
-                                       | otherwise = undefined 
--}
-trocabloco :: Bloco -> Bloco -> [Bloco] -> [Bloco]
-trocabloco _ _ [] =[]
-trocabloco antigo novo (bloco:resto) | antigo == bloco = novo : trocabloco antigo novo resto
-                                     | otherwise = bloco: trocabloco antigo novo resto
+pisaalcapao (x,y) a@(Mapa _ _ blocos) =  blocoNaPosicao a (x,y+1) == Just Alcapao 
+
+
+
+pisaalcapaoJogador :: Personagem -> Mapa -> Mapa
+pisaalcapaoJogador j m@(Mapa (p1,d) p2 []) = m
+pisaalcapaoJogador j a@(Mapa (p1,d) p2 (linha1:resto)) | tipo j == Jogador && pisaalcapao (posicao j) a  = Mapa (p1,d) p2 (trocarBlocoNaPosicao Alcapao Vazio (fst (posicao j), snd (posicao j) +1) (linha1:resto))
+                                                       | otherwise = a
+
+trocarBlocoNaPosicao :: Bloco -> Bloco -> Posicao -> [[Bloco]] -> [[Bloco]]
+trocarBlocoNaPosicao _ _ _ [] = []  -- Se a matriz estiver vazia, não há nada a fazer
+trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
+    take (round linha) matriz ++
+    [trocarLinhaNaPosicao antigo novo coluna (matriz !! round linha)] ++
+    drop (round linha + 1) matriz
+  where
+    trocarLinhaNaPosicao _ _ _ [] = []  -- Se a linha estiver vazia, não há nada a fazer
+    trocarLinhaNaPosicao antigo novo coluna (b:bs)
+      | coluna == 0 = novo : bs  -- Substitui o bloco na posição específica
+      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs  -- Mantém o bloco original
 
 
 
 
+
+
+
+trocarBlocoMatriz :: Bloco -> Bloco -> [[Bloco]] -> [[Bloco]]
+trocarBlocoMatriz _ _ [] = []  -- Se a matriz estiver vazia, não há nada a fazer
+trocarBlocoMatriz antigo novo (linha:resto) =
+  trocarLinha antigo novo linha : trocarBlocoMatriz antigo novo resto
+  where
+    trocarLinha _ _ [] = []  -- Se a linha estiver vazia, não há nada a fazer
+    trocarLinha antigo novo (b:bs)
+      | b == antigo = novo : trocarLinha antigo novo bs  -- Substitui o bloco antigo pelo novo
+      | otherwise = b : trocarLinha antigo novo bs  -- Mantém o bloco original
+
+
+novaMatrizaux :: [[Bloco]] -> [[Bloco]] 
+novaMatrizaux [[]] = [[]]
+novaMatrizaux [] = []
+novaMatrizaux (linha1:restantes) = substituirBloco Alcapao Vazio linha1 : novaMatrizaux restantes
+
+
+--substitui blocos
+substituirBloco :: Eq a => a -> a -> [a] -> [a]
+substituirBloco blocoantes blocodepois = map (\x -> if x == blocoantes then blocodepois else x)
 --movimenta :: Semente -> Tempo -> Jogo -> Jogo
 --movimenta = undefined

@@ -12,8 +12,8 @@ import GHC.Float (double2Float)
 
 
 data Estado = Estado 
-  { jogo :: Jogo,
-    imagens :: Imagens}
+             { jogo :: Jogo,
+               imagens :: Imagens }
 
 
 
@@ -45,9 +45,9 @@ desenhaMapa x y (Mapa (_ ,_) _ (linhabloco : restos)) imgs = linha ++ resto
 
 
 
-desenhaMario :: Imagens -> Mapa -> Picture 
-desenhaMario imgs (Mapa (pos, _) _ _) = Translate (double2Float fst p, double2Float snd p) $ Scale 0.5 0.5 imagem 
-   where imagem = getImagem Mario imgs 
+--desenhaMario :: Imagens -> Mapa -> Picture 
+--desenhaMario imgs (Mapa (pos, _) _ _) = Translate (double2Float fst pos, double2Float snd pos) $ Scale 0.5 0.5 imagem 
+--where imagem = getImagem Mario imgs 
 
 
 
@@ -71,9 +71,8 @@ main = do
         (InWindow "Game" (500,500) (500, 200))
         corFundo 
         frameRate 
+         (Estado {jogo = jogoexp, imagens= imgs}) 
         desenha 
-        (Estado {jogo = jogoexp, imagens= imgs}) 
-
 
 
 

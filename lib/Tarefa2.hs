@@ -10,6 +10,7 @@ module Tarefa2 where
 import Tarefa1
 import LI12324
 import Tarefa3 
+import GHC.OldList (elemIndices, elemIndex)
 
 per = Personagem {
    posicao = (5,5),
@@ -183,3 +184,14 @@ posicaopl _ [] = []
 posicaopl (x, y) (h:t)
     | h == Plataforma = (x, y) : posicaopl (x + 1, y) t
     | otherwise = posicaopl (x + 1, y) t 
+
+
+
+posicaoBlocos :: Bloco -> [[Bloco]] -> [Posicao] 
+posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
+                                   colunas <- [0 .. (length matriz)-1]  
+                                 , linhas  <- elemIndices bloco (matriz !! colunas)]  
+            
+
+
+

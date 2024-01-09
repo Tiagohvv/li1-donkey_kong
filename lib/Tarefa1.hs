@@ -169,7 +169,7 @@ posicaoBlocoss (bloco:resto)
 
 
 blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
-blocoNaPosicao (Mapa _ _ blocos) (x, y) | round x >= 0 && round x < length blocos && round y < length (head blocos) && y >= 0 = Just (blocos !! round x !! round y)
+blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length blocos && round x < length (head blocos) && x >= 0 = Just (blocos !! round y !! round x)
                                         | otherwise = Nothing
                       
                                                  
