@@ -12,23 +12,34 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((0.5, 5.5), Oeste) (0.5, 2.5) matrizJogoExp
+mapaTeste = Mapa ((1,1), Oeste) (0.5, 2.5) matrizJogoExp
 
 matrizJogoExp :: [[Bloco]]
 matrizJogoExp =[
-     [Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Alcapao, Vazio, Vazio, Vazio, Vazio]
-    ,[Escada, Alcapao, Vazio, Vazio, Alcapao, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio]
-    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+     [Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Escada,Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma,Plataforma, Plataforma,Plataforma, Plataforma,Plataforma]
+    ,[Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Alcapao, Plataforma, Plataforma, Vazio, Vazio, Vazio,Plataforma, Plataforma,Plataforma, Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Alcapao, Plataforma, Plataforma, Vazio, Vazio, Vazio,Plataforma, Plataforma,Plataforma, Plataforma]
+    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
     ]
 jogoexp :: Jogo 
 jogoexp = Jogo mapaTeste inimigo colec player 
 
 colec :: [(Colecionavel, Posicao)]
-colec = [(Moeda, (3,1)), (Martelo, (1,1))]
+colec = [(Moeda, (1,1)), (Martelo, (1,6))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
@@ -59,7 +70,7 @@ inimigo = [Personagem {velocidade = (0,0),
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
-                     posicao = (1,1),
+                     posicao = (3,3),
                      direcao = Este,
                      tamanho = (2,2),
                      emEscada = False,
@@ -113,10 +124,20 @@ xaupersonagem :: Posicao -> Posicao
 xaupersonagem (x,y) = (x+1000,y+1000) 
 
 
+temGravidadeEMjogo :: Tempo -> Jogo -> Jogo 
+temGravidadeEMjogo t j = j {jogador = temGravidade t (jogador j) (mapa j) } 
+
+temGravidade :: Tempo -> Personagem -> Mapa -> Personagem
+temGravidade t p a@(Mapa _ _ matriz) | blocoNaPosicao a (fst (posicao p), snd (posicao p) +1) /= Just Plataforma = velocidadeGravidade t p 
+                                     | otherwise = p  
 
 
-gravidadeexiste :: Personagem -> Mapa -> Personagem 
-gravidadeexiste p (Mapa _ _ blocos) = undefined 
+velocidadeGravidade :: Tempo -> Personagem -> Personagem 
+velocidadeGravidade t p = p {posicao = (fst (posicao p) , (snd (posicao p)) + ((snd gravidade) * t))}
+
+
+
+
 
 {-
 aplicaGravidade :: Mapa -> Personagem -> Personagem
@@ -149,9 +170,6 @@ aplicarGravidade personagem =
       novaPosicao = atualizarPosicao personagem novaVelocidade
   in personagem { velocidade = novaVelocidade, posicao = novaPosicao }
 
--- Valor da aceleração devido à gravidade
-gravidade :: Double
-gravidade = 0.1
 
 -- Atualiza a posição do personagem com base na velocidade
 atualizarPosicao :: Personagem -> Velocidade -> Posicao
@@ -184,7 +202,6 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) =
 -}
 
 
-
 -- Fantasma perde vida ao ser martelado 
 perdevidainimigoEMjogo :: Jogo -> Jogo 
 perdevidainimigoEMjogo j = j {inimigos = perdevidainimigo (inimigos j) (jogador j) } 
@@ -210,21 +227,18 @@ perdevidaJogador j (ini:inis) | colisoesPersonagens j ini = perdevidaJogador (j 
                               | otherwise = perdevidaJogador j inis 
 
 
---recolhecolec :: Personagem -> [Colecionavel] -> Colecionavel 
---recolhecolec j col | 
 
-
--- arma o jogador se for martelo e aumenta pontos se for moeda (ainda não desaparece)
+-- arma o jogador se for martelo e aumenta pontos se for moeda. Desaparecem se forem recolhidos 
 armaEpontosJogadorEMjogo :: Jogo -> Jogo 
-armaEpontosJogadorEMjogo = undefined 
+armaEpontosJogadorEMjogo j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador (jogador j) (colecionaveis j)}
 
-{-
+
 xaucolec :: Personagem -> [(Colecionavel, Posicao)] -> [(Colecionavel, Posicao)]
 xaucolec j [] = []
-xaucolec j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col)) = (xaupersonagem (snd col)) : xaucolec j cols 
-                      | otherwise = col : xaucolec j cols 
+xaucolec j ((col,pos):cols) | sobreposicao (gethitbox j) (gethitboxcol pos) = (col,xaupersonagem pos) : xaucolec j cols 
+                            | otherwise = (col,pos) : xaucolec j cols       
 
--}
+
 armaEpontosJogador :: Personagem -> [(Colecionavel, Posicao)] -> Personagem 
 armaEpontosJogador j [] = j 
 armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador (j {aplicaDano = (True, 10)}) cols
@@ -232,13 +246,14 @@ armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd 
                                 | otherwise = armaEpontosJogador j cols 
 
 
+-- Função que faz um alçapão desaparecer se o jogador o pisar  
 
+pisaalcapaoEMjogo :: Jogo -> Jogo 
+pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (mapa j) }
 
 
 pisaalcapao :: Posicao -> Mapa -> Bool 
 pisaalcapao (x,y) a@(Mapa _ _ blocos) =  blocoNaPosicao a (x,y+1) == Just Alcapao 
-
-
 
 pisaalcapaoJogador :: Personagem -> Mapa -> Mapa
 pisaalcapaoJogador j m@(Mapa (p1,d) p2 []) = m
@@ -246,42 +261,17 @@ pisaalcapaoJogador j a@(Mapa (p1,d) p2 (linha1:resto)) | tipo j == Jogador && pi
                                                        | otherwise = a
 
 trocarBlocoNaPosicao :: Bloco -> Bloco -> Posicao -> [[Bloco]] -> [[Bloco]]
-trocarBlocoNaPosicao _ _ _ [] = []  -- Se a matriz estiver vazia, não há nada a fazer
+trocarBlocoNaPosicao _ _ _ [] = []  
 trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
     take (round linha) matriz ++
     [trocarLinhaNaPosicao antigo novo coluna (matriz !! round linha)] ++
     drop (round linha + 1) matriz
   where
-    trocarLinhaNaPosicao _ _ _ [] = []  -- Se a linha estiver vazia, não há nada a fazer
+    trocarLinhaNaPosicao _ _ _ [] = []  
     trocarLinhaNaPosicao antigo novo coluna (b:bs)
-      | coluna == 0 = novo : bs  -- Substitui o bloco na posição específica
-      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs  -- Mantém o bloco original
+      | coluna == 0 = novo : bs  
+      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs 
 
 
 
 
-
-
-
-trocarBlocoMatriz :: Bloco -> Bloco -> [[Bloco]] -> [[Bloco]]
-trocarBlocoMatriz _ _ [] = []  -- Se a matriz estiver vazia, não há nada a fazer
-trocarBlocoMatriz antigo novo (linha:resto) =
-  trocarLinha antigo novo linha : trocarBlocoMatriz antigo novo resto
-  where
-    trocarLinha _ _ [] = []  -- Se a linha estiver vazia, não há nada a fazer
-    trocarLinha antigo novo (b:bs)
-      | b == antigo = novo : trocarLinha antigo novo bs  -- Substitui o bloco antigo pelo novo
-      | otherwise = b : trocarLinha antigo novo bs  -- Mantém o bloco original
-
-
-novaMatrizaux :: [[Bloco]] -> [[Bloco]] 
-novaMatrizaux [[]] = [[]]
-novaMatrizaux [] = []
-novaMatrizaux (linha1:restantes) = substituirBloco Alcapao Vazio linha1 : novaMatrizaux restantes
-
-
---substitui blocos
-substituirBloco :: Eq a => a -> a -> [a] -> [a]
-substituirBloco blocoantes blocodepois = map (\x -> if x == blocoantes then blocodepois else x)
---movimenta :: Semente -> Tempo -> Jogo -> Jogo
---movimenta = undefined
