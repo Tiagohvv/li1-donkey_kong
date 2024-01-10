@@ -23,7 +23,7 @@ per = Personagem {
 
 
 per2 = Personagem {
-   posicao = (2,2),
+   posicao = (10,2),
    tamanho = (3,3),
    ressalta = False,
    tipo = Jogador

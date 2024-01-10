@@ -18,7 +18,7 @@ type EstadoGloss = (Estado,Picture)
 
 
 type Imagens = [(Imagem, Picture)]
-data Imagem = Mario | Escadaimg | Plataformaimg | Alcapaoimg  
+data Imagem = Mario | Escadaimg | Plataformaimg | Alcapaoimg | Fantasmaimg 
              deriving (Show, Eq)  
 
 
@@ -37,7 +37,6 @@ desenhaLinha x y (h:t) imgs | h == Plataforma = translate ((x*escala)-920) ((y*e
 
 escala :: Float 
 escala = 60 
-
 
 l :: Float 
 l = 1 
