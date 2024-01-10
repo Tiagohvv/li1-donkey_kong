@@ -4,21 +4,28 @@ import Tarefa1
 import Tarefa3
 import Tarefa2
 import Graphics.Gloss
-import Graphics.Gloss.Interface.IO.Game
+import Graphics.Gloss.Interface.IO.Game 
 
 import System.Random
 import Data.Maybe ( fromJust )
 import GHC.Float (double2Float)
+import System.Exit (exitSuccess)
 
 data Estado = Estado 
             { jogo :: Jogo,
-              imagens :: Imagens }
+              imagens :: Imagens,
+              modo :: Modo  
+              }
+
+data Modo = MenuInicial OpcoesMenu | EmJogo  deriving (Show,Eq)
+
+data OpcoesMenu = Jogar | Opcoes | Sair   deriving (Show,Eq)        
 
 type EstadoGloss = (Estado,Picture)
 
 
 type Imagens = [(Imagem, Picture)]
-data Imagem = Mario | Escadaimg | Plataformaimg | Alcapaoimg | Fantasmaimg 
+data Imagem = Mario | Escadaimg | Plataformaimg | Alcapaoimg | Fantasmaimg| Jogarimg | Sairimg
              deriving (Show, Eq)  
 
 
@@ -27,6 +34,13 @@ corFundo = black
 
 frameRate :: Int 
 frameRate = 50 
+
+
+desenhaOpcJogar :: Float -> Float -> Imagens -> Picture     -- 613 333
+desenhaOpcJogar x y imgs = translate x y (getImagem Jogarimg imgs) 
+
+desenhaOpcSair :: Float -> Float -> Imagens -> Picture 
+desenhaOpcSair x y imgs = translate x y (getImagem Sairimg imgs)
 
 desenhaLinha :: Float -> Float -> [Bloco] -> Imagens -> [Picture]
 desenhaLinha _ _ [] _ = []
@@ -42,7 +56,7 @@ l :: Float
 l = 1 
 
 estadoexp :: Estado 
-estadoexp = Estado {jogo = jogoexp} 
+estadoexp = Estado {jogo = jogoexp, modo = MenuInicial Jogar} 
 
 --estadoGlossInicial :: Picture -> EstadoGloss 
 --estadoGlossInicial a = (estadoinicial, z)
@@ -69,7 +83,9 @@ posicoesmapa (Mapa a b (bloco:resto)) = posicaoBlocoss bloco ++ posicoesmapa (Ma
 
 
 desenha :: Estado -> IO Picture 
-desenha estado = return $ Pictures (desenhaMario (imagens estado) mapaTeste : desenhaMapa 0 0 mapaTeste (imagens estado))   
+desenha e@Estado {modo= MenuInicial Sair} = return $ Pictures [desenhaOpcJogar (-300) 0 (imagens e), Scale 1.5 1.5 $ desenhaOpcSair (300) 0 (imagens e)]
+desenha e@Estado {modo = MenuInicial Jogar} = return $ Pictures [Scale 1.5 1.5 $ desenhaOpcJogar (-300) 0 (imagens e), desenhaOpcSair (300) 0 (imagens e)]
+desenha e@Estado {modo = EmJogo} = return $ Pictures (desenhaMario (imagens e) mapaTeste : desenhaMapa 0 0 mapaTeste (imagens e))   
 
 
 --desenhaEstadoGloss :: EstadoGloss -> Picture 
@@ -79,7 +95,17 @@ reageTempoGloss :: Float -> Estado -> IO Estado
 reageTempoGloss _ x = return x 
 
 reageEventGloss :: Event -> Estado -> IO Estado 
-reageEventGloss _ e = return e   
+reageEventGloss (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {modo = EmJogo} =
+  return e {modo = MenuInicial Jogar}
+reageEventGloss (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {modo = MenuInicial Jogar} =
+  return e {modo = EmJogo}
+reageEventGloss (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {modo= MenuInicial Jogar} =
+  return e {modo = MenuInicial Sair}
+reageEventGloss (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {modo = MenuInicial Sair} = 
+  return e {modo = MenuInicial Jogar} 
+reageEventGloss (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {modo = MenuInicial Sair} = exitSuccess 
+reageEventGloss _ e = return e
+
 
 
 getImagem :: Imagem -> Imagens -> Picture 
@@ -109,12 +135,14 @@ main = do
 
 loadimages :: Estado -> IO Estado
 loadimages estado = do 
-  --mario <- loadBMP "mario2.bmp"
   plataforma <- loadBMP "imagensbmp/plataforma.bmp" 
   alcapao <- loadBMP "imagensbmp/alcapao.bmp"
   escada <- loadBMP "imagensbmp/ladder.bmp" 
   mario <- loadBMP "imagensbmp/Mario1.bmp"
+  jogar <- loadBMP "imagensbmp/play.bmp"
+  sair <- loadBMP "imagensbmp/sair.bmp"
+ 
 
-  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario)]}
+  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario), (Jogarimg,jogar), (Sairimg,sair)]}
 
 

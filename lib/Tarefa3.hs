@@ -70,7 +70,7 @@ inimigo = [Personagem {velocidade = (0,0),
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
-                     posicao = (3,3),
+                     posicao = (4,3),
                      direcao = Este,
                      tamanho = (2,2),
                      emEscada = False,
