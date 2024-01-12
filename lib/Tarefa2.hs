@@ -12,51 +12,62 @@ import LI12324
 import Tarefa3 
 import GHC.OldList (elemIndices, elemIndex)
 
-per = Personagem {
-   posicao = (5,5),
-   tamanho = (10,20),
-   ressalta = True,
-   tipo = Fantasma,
-   vida = 1
-}
 
-
-
-per2 = Personagem {
-   posicao = (10,2),
-   tamanho = (3,3),
-   ressalta = False,
-   tipo = Jogador
-}
-
-
-
-per3 = Personagem {
-   posicao = (4,4),
-   tamanho = (3,3),
-   ressalta = False,
-   tipo = Jogador
-}
-{-
 valida :: Jogo -> Bool
-valida jogo    | ressalta per == True && ressalta per3 == True && ressalta per2 == False = False 
-               | posicao per2 == posicao per3 || posicao per2 == posicao per = False
-               | validaesc (mapaTeste) == False = False
-               | vida per /= 1 || vida per3 /= 1 = False
-               ----- colisoesParede == False = False
-               | otherwise = True 
+valida (Jogo mapa inimigos colecionaveis jogador) | validachao mapa == False = False
+                                                  | ressalta jogador == False || validaressalta inimigos == False = False 
+                                                  | validaposicaoJogador jogador inimigos == False = False
+                                                  | containimigos inimigos < 2 = False 
+                                                  | validavidas inimigos == False = False
+                                                  | validaesc mapa == False = False
+                                                  | fst (tamanho jogador) <= 10 = False
+                                                  | otherwise = True
+
+
+
+
+
+
+validaposicaoJogador :: Personagem -> [Personagem] -> Bool
+validaposicaoJogador x [] = True
+validaposicaoJogador x (h:t) | colisoesPersonagens x h == True = False
+                             | otherwise = validaposicaoJogador x t
+
+
+
+
+containimigos :: [Personagem] -> Int
+containimigos [] = 0
+containimigos (h:t) = 1 + containimigos t
+
+
+{-| Função que dada uma lista de personagens verifica se estas têm a propriedade vida igual a 1 
+== Exemplos
+
+>>>
 -}
---validaressalta :: Personagem -> [Personagem] -> Bool 
---validaressalta jog = not (ressalta jog) &&  
+
+validavidas :: [Personagem] -> Bool
+validaviads [] = True
+validavidas (h:t) | vida h /= 1 = False                                                   
+                  | otherwise = validavidas t
+
+
+{-| Função que dada uma lista de personagens verifica se estas têm a propriedade ressalta a false
+== Exemplos
+
+>>>
+-}
+
+validaressalta :: [Personagem] -> Bool
+validaressalta [] = True
+validaressalta (h:t) | ressalta h == False = False                                                   
+                     | otherwise = validavidas t
+
+
 
 validachao :: Mapa -> Bool 
 validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
-
-
---emBloco :: [Posicao] -> [Posicao] -> Bool
-
-
------ validar escadas(por acabar)
 
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
@@ -67,35 +78,98 @@ validachao (Mapa _ _ matriz) = all (==Plataforma) (last matriz)
 -}
 
 
-validaesc :: [[Bloco]] -> Bool
-validaesc (mapaTeste) | validaCoisasAl (posicaoBlocosesc (0,0) (mapaTeste)) (posicaoBlocosal (0,0) (mapaTeste)) == False = False
-                      | validaCoisasPlat (posicaoBlocosesc (0,0) (mapaTeste)) (posicaoBlocospl (0,0) (mapaTeste)) == False = False
-                      | otherwise = True  
-
-
-                                 
-
-validaCoisasPlat :: [Posicao] -> [Posicao] -> Bool
-validaCoisasPlat [] [] = True
-validaCoisasPlat [] _ = True
-validaCoisasPlat _ [] = True
-validaCoisasPlat ((h,r):t) ((x,z):y) | (h,r) == (x,z+1) || (h,r-1) == (x,z) = validaCoisasPlat t ((x,z):y)
-                                     |otherwise = validaCoisasPlat ((h,r):t) y
+validaesc :: Mapa -> Bool
+validaesc (Mapa _ _ x)  | validaCoisasAl (posicaoBlocosesc (0,0) x) (posicaoBlocosal (0,0) x) == False = False
+                        | escadinhas (validaCoisasPlat (posicaoBlocosesc (0.0,0.0) (x)) (posicaoBlocospl (0.0,0.0) (x))) (posicaoBlocosesc (0.0,0.0) (x)) == False = False
+                        | otherwise = True  
 
 
 
+{-| Função que dada a posição de escadas verifica se estas começam ou acabam escadas
 
+== Exemplos
+
+>>> 
+-}
+
+
+escadinhas :: [Posicao] -> [Posicao] -> Bool
+escadinhas _ [] = False
+escadinhas [] _ = True
+escadinhas ((h,r):t) y | escadinhasaux (h,r) y == True = escadinhas t y
+                       | otherwise = False
+
+
+{-| Função que dada a posição de uma escada verifica se esta começa ou acaba em outra escada
+
+== Exemplos
+
+>>> 
+-}
+
+
+escadinhasaux :: Posicao -> [Posicao] -> Bool
+escadinhasaux _ [] = False
+escadinhasaux (h,r) ((x,z):y) | (h,r) == (x,z+1) || (h,r) == (x,z-1) = True
+                              | otherwise = escadinhasaux (h,r) y
+
+
+
+{-| Função que dada a posição de escadas verifica se estas começam ou acabam em plataformas, aplicando a função validaCoisasPlataux, o que faz com que retorne a lista de posições que não cumprem os requesitos dseta função
+
+== Exemplos
+
+>>>
+-}
+
+validaCoisasPlat :: [Posicao] -> [Posicao] -> [Posicao]
+validaCoisasPlat [] _ = []
+validaCoisasPlat ((h,r):t) y = validaCoisasPlataux (h,r) y ++ validaCoisasPlat t y
+
+
+{-| Função que dada a posição de uma escada verifica se esta começa ou acaba numa em Plataforma, devolvendo a posição de todas as escadas que não começam nem acabam em plataformas
+
+== Exemplos
+
+>>> 
+-}
+
+
+validaCoisasPlataux :: Posicao -> [Posicao] -> [Posicao]
+validaCoisasPlataux (h,r) [] = [(h,r)]
+validaCoisasPlataux (h,r) ((x,z):y) | (h,r) == (x,z+1) || (h,r) == (x,z-1) = []
+                                    | otherwise = validaCoisasPlataux (h,r) y
+
+
+{-| Função que dada a posição de todas as escadas verifica se estas começam ou acabam em alçapões
+
+== Exemplos
+
+>>> 
+-}
 
 validaCoisasAl :: [Posicao] -> [Posicao] -> Bool
 validaCoisasAl [] [] = True
 validaCoisasAl [] _ = True
-validaCoisasAl _ [] = True
-validaCoisasAl ((h,r):t) ((x,z):y) | (h,r) /= (x,z+1) && (h,r-1) /= (x,z) = validaCoisasAl t ((x,z):y)
-                                   | otherwise = False
+validaCoisasAl ((h,r):t) y | validaCoisasAlaux (h,r) y == True = validaCoisasAl t y
+                           | otherwise = False
+
+
+{-| Função que dada a posição de uma escada verifica se esta começa ou acaba num Alçapão
+
+== Exemplos
+
+>>> 
+-}
+
+
+validaCoisasAlaux :: Posicao -> [Posicao] -> Bool
+validaCoisasAlaux _ [] = True
+validaCoisasAlaux (h,r) ((x,z):y) | (h,r) == (x,z+1) || (h,r) == (x,z-1) = False
+                                  | otherwise = validaCoisasAlaux (h,r) y
 
 
 
------Feito
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
 
@@ -187,6 +261,9 @@ posicaopl (x, y) (h:t)
 
 
 
+
+
+
 posicaoBlocos :: Bloco -> [[Bloco]] -> [Posicao] 
 posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
                                    colunas <- [0 .. (length matriz)-1]  
@@ -194,4 +271,30 @@ posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) |
             
 
 
+
+{-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todas as escadas.
+
+== Exemplos
+
+>>> posicaoBlocosesc (0.0,0.0) [[Vazio,Escada,Plataforma],[Vazio,Escada,Plataforma,Alcapao]]
+[(1.0,0.0),(1.0,1.0)]
+-}
+posicaoBlocosvaz :: Posicao -> [[Bloco]] -> [Posicao]
+posicaoBlocosvaz _ [] = []
+posicaoBlocosvaz (x, y) (h:t) = posicaovaz (x, y) h ++ posicaoBlocosvaz (x, y + 1) t
+
+
+
+{-| Função que dada uma posição inicial e uma lista de Blocos(o que corresponde a uma linha de Blocos) dá a posição das escadas.
+
+== Exemplos
+
+>>>posicaovaz (0.0,0.0) [Vazio,Escada,Plataforma,Alcapao]
+[(0.0,0.0)] 
+-}
+posicaovaz :: Posicao -> [Bloco] -> [Posicao]
+posicaovaz _ [] = []
+posicaovaz (x, y) (h:t)
+    | h == Vazio = (x, y) : posicaovaz (x + 1, y) t
+    | otherwise = posicaovaz (x + 1, y) t 
 

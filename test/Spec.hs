@@ -1,8 +1,10 @@
 module Main where
 
+import Tarefa1Spec
+import Tarefa2Spec
+import Tarefa3Spec
+import Tarefa4Spec
 import Test.HUnit
 
-test_suite_01 = test ["Basic Test" ~: True ~=? True]
-
 main :: IO ()
-main = runTestTTAndExit $ test [test_suite_01]
+main = runTestTTAndExit $ test [testesTarefa1, testesTarefa2, testesTarefa3, testesTarefa4]

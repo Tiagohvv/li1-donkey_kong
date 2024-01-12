@@ -103,7 +103,7 @@ main = do
         desenha   
         reageEventGloss
         reageTempoGloss
-        
+
 
 
 

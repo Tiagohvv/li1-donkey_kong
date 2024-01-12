@@ -11,38 +11,30 @@ import LI12324
 import Data.Fixed (E0)
 
 
-colisoesParede :: [[Bloco]] -> Personagem -> Bool
-colisoesParede (mapaTeste) per2 | (posicao per2) == (100.0,0.0) || (posicao per2) == (100.0,0.0) = True
-                                | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) = True
-                                | otherwise = False
+colisoesParede :: Mapa -> Personagem -> Bool
+colisoesParede (Mapa (_, _) _ mapaTeste) per2 | fora (posicao per2) == True = True
+                                              | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) = True
+                                              | otherwise = False
+
+
+
 
 colisoesPersonagens :: Personagem -> Personagem -> Bool
 colisoesPersonagens per1 per2 | sobreposicao (criaHitbox per1) (criaHitbox per2) = True 
                               | otherwise = False
 
 
+{-| Função que dada a posição do jogador devolve True se este estiver fora do mapa e False se o jogador estiver dentro do mapa
+matrizJogoExp
+== Exemplos
+fora (44.0,22.0)
+>>> True
+-}
 
---colisoesPersonagens :: Personagem -> [Personagem] -> Bool
---colisoesPersonagens per2 [per,per3] | colisao (criaHitbox per2) [(criaHitbox (per)), (criaHitbox (per3))] = True 
- --                                   | otherwise = False
-
---colisoesParede :: Mapa -> Personagem -> Bool
---colisoesParede (m) Personagem {posicao = (x,y)} | x == 100 || y == 100 = True
- --                                              | sobreposicao (posicao personagem) (espacoBloco (0,0) (m)) = True
- --                                              | otherwise = False
+fora :: (Double,Double) -> Bool
+fora (x,y) | x >= 42 || y >= 18 = True
+           | otherwise = False
                                             
-
-
-{-teste
-type Hitbox = (Posicao, Posicao)
-
-
--- | Posicao no 'Mapa'.
-type Posicao = (Double, Double)
-
---}
-
-
 
 {-| Função que testa se duas Hitboxs estão a colidir.
 
@@ -127,35 +119,6 @@ criaHitbox :: Personagem -> Hitbox
 criaHitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
 
 
-player2 :: Personagem
-player2 = Personagem {velocidade = (0,0),
-                     tipo = Jogador,
-                     posicao = (1,1),
-                     direcao = Este,
-                     tamanho = (2,2),
-                     emEscada = False,
-                     ressalta = False,
-                     vida = 3,
-                     pontos = 0,
-                     aplicaDano = (True,0.0)
-                     }
-
-
-
-player3 :: Personagem
-player3 = Personagem {velocidade = (0,0),
-                     tipo = Jogador,
-                     posicao = (1.5,1),
-                     direcao = Este,
-                     tamanho = (1,1),
-                     emEscada = False,
-                     ressalta = False,
-                     vida = 3,
-                     pontos = 0,
-                     aplicaDano = (True,0.0)
-                     }
-
-
 
 
 
@@ -172,8 +135,21 @@ blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
 blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length blocos && round x < length (head blocos) && x >= 0 = Just (blocos !! round y !! round x)
                                         | otherwise = Nothing
                       
-                                                 
-                    
 
-            
+
+
+ -- Não é necessário para o jogo funcionar                                                
+
+--colisoesPersonagens :: Personagem -> [Personagem] -> Bool
+--colisoesPersonagens per2 [per,per3] | colisao (criaHitbox per2) [(criaHitbox (per)), (criaHitbox (per3))] = True 
+ --                                   | otherwise = False
+
+--colisoesParede :: Mapa -> Personagem -> Bool
+--colisoesParede (m) Personagem {posicao = (x,y)} | x == 100 || y == 100 = True
+ --                                              | sobreposicao (posicao personagem) (espacoBloco (0,0) (m)) = True
+ --                                              | otherwise = False                    
+
+
+
+
 

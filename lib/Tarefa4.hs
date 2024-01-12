@@ -12,6 +12,8 @@ import LI12324
 import Data.Bool (Bool)
 import Tarefa1
 import Tarefa2
+import Tarefa3 
+
 
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
 --atualiza  acoesInimigos [per,per3] x jogo = undefined 
