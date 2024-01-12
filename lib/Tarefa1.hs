@@ -52,9 +52,23 @@ type Posicao = (Double, Double)
 True
 -}
 
+-- Tiago
+--sobreposicao :: Hitbox -> Hitbox -> Bool
+--sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
+--                                                       | otherwise = False
+
+--sobreposicao :: Hitbox -> Hitbox -> Bool
+--sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | (x3>= x1 && x3<=x2 || x4>=x1 && x4<=x2) && ( y3>=y1 && y3<=y2|| y4>=y1 && y4<=y2)  = True
+--                                                       | otherwise = False                    
+
 sobreposicao :: Hitbox -> Hitbox -> Bool
-sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
-                                                       | otherwise = False                                                 
+sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | ((x3>= x1 && x3<=x2)&& ((y3>=y1 && y3<=y2) || (y4>=y1 && y4<=y2))) || ((y1==y3 &&y2==y4)&& ((x3>=x1 && x3<=x2) || (x4>=x1 && x4<=x2))) || ((x3==x1 && x4==x2)&&((y3>=y1 && y3<=y2)|| (y4>=y1 && y4<=y2))) || (x3==x2 && ((y3>=y1 && y3<=y2)|| (y4<=y2 &&y4>=y1))) || (x4==x1 && ((y4<=y2 && y4>=y1)|| (y3<=y2 && y3>=y1))) || ((x3>=x1 && x3<=x2)&&(y4<=y2 && y4>=y1)) || ((x1>=x3 && x1<=x4)&&(y2<=y4 && y2>=y3)) = True
+                                                       | otherwise = False                                                                                   
+
+--sobreposicao :: Hitbox -> Hitbox -> Bool 
+--sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) 
+ --  | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7 <= p3) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8 <= p4) = True
+ --  |otherwise = False
 
 {-| Função que testa se duas Hitboxs estão a colidir. 
 
@@ -173,7 +187,7 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length bloco
                                         | otherwise = Nothing
                       
                                                  
-                    
+  
 
             
 
