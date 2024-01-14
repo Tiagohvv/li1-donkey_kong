@@ -25,14 +25,20 @@ valida (Jogo mapa inimigos colecionaveis jogador _) | validachao mapa == False =
 
 
 
---
+{-| Função que dada uma personagem e uma lista de personagens aplica a função validaposicaoJogador tendo como argumentos a primeira persinagem dada e a head da lista de personagens, se a função colisaopersonagens der false a função retorna false ,caso contrário continua a correr a função devolvendo true se acabar a lista de personagens
 
+== Exemplos
+
+>>>validaposicaoJogador Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0)} [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}   ,Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este} ]
+True
+-}
 validaposicaoJogador :: Personagem -> [Personagem] -> Bool
 validaposicaoJogador x [] = True
 validaposicaoJogador x (h:t) | colisoesPersonagens x h == True = False
                              | otherwise = validaposicaoJogador x t
 
 {-| Função que dada uma lista de personagens conta o seu número
+
 == Exemplos
 
 >>>containimigos [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}   ,Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este} ]
@@ -45,6 +51,7 @@ containimigos (h:t) = 1 + containimigos t
 
 
 {-| Função que dada uma lista de personagens verifica se estas têm a propriedade vida igual a 1, caso contrário devolve false 
+
 == Exemplos
 
 >>>validavidas [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}   ,Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este} ]
@@ -58,6 +65,7 @@ validavidas (h:t) | (vida h) > 1 = False
 
 
 {-| Função que dada uma lista de personagens verifica se estas têm a propriedade ressalta a false, casa alguma não tenha esta devolve false
+
 == Exemplos
 
 >>> validaressalta [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}   ,Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este} ]
@@ -84,6 +92,7 @@ validachao (Mapa _ _ matriz) | all (==Plataforma) (last matriz) = True
 
 
 {-| Função que dado um mapa devolve True, apenas se pelo menos uma das extremidades das escadas começar em plataforma
+
 == Exemplos
 
 >>>validaesc (Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]])
@@ -291,10 +300,13 @@ posicaovaz (x, y) (h:t)
     | otherwise = posicaovaz (x + 1, y) t 
 
 
+{-| Função que recebe um bloco e uma lista de blocos e retorna a lsita das posiçõse onde se encontra esse blocos
 
+== Exemplos
 
-
-
+>>>posicaovaz (0.0,0.0) [Vazio,Escada,Plataforma,Alcapao]
+[(0.0,0.0)] 
+-}
 posicaoBlocos :: Bloco -> [[Bloco]] -> [Posicao] 
 posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
                                    colunas <- [0 .. (length matriz)-1]  

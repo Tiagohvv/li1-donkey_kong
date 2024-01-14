@@ -135,6 +135,7 @@ gethitbox :: Personagem -> Hitbox
 gethitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
 
 {-| Função que dada uma posição cria a hitbox de um colecionável
+
 == Exemplos
 
 >>>gethitboxcol (1,1)
@@ -146,6 +147,7 @@ gethitboxcol l = ((fst l - fst tamanho/2, snd l - snd tamanho/2) ,(fst l + fst t
                       where tamanho = (1,1)
 
 {-| Função que dada uma personagem devolve a sua hitbox de dano consoante a direção da mesma
+
 == Exemplos
 
 >>>getdamagehitbox player
@@ -194,6 +196,7 @@ getdamagehitboxAuxNorte :: Hitbox -> Hitbox
 getdamagehitboxAuxNorte ((x,y),(x2,y2)) = ((x,y-(y2-y)),(x2,y2-(y2-y)))
 
 {-| Função que dada uma hitbox cria a hitbox que aplica dano a baixo
+
 == Exemplos
 
 >>>getdamagehitboxAuxSul ((0.5,0.5),(1.5,1.5))
@@ -209,6 +212,7 @@ inimigomorreEMjogo :: Jogo -> Jogo
 inimigomorreEMjogo j = j {inimigos = inimigomorre (inimigos j)}
 
 {-| Função dada uma lista de personagens aplica a função inimigomorreAux a essa lista
+
 == Exemplos
 
 >>>inimigomorre [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}   ,Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este} ]
@@ -220,6 +224,7 @@ inimigomorre [] = []
 inimigomorre (h:t)  =  inimigomorreAux h : inimigomorre t
 
 {-| Função que dada uma personagem aplica a função xaupersonagem se esta for do tipo fantasma e a sua vida for igual a 0 caso contrário devolve a mesma personagem
+
 == Exemplos
 
 >>>inimigomorreAux Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste}
@@ -231,6 +236,7 @@ inimigomorreAux p | tipo p == Fantasma && vida p == 0 = p { posicao = xaupersona
                   | otherwise = p 
 
 {-| Função que dada uma posição acrescenta 1000 ao x e y
+
 == Exemplos
 
 >>>xaupersonagem (4,3)
@@ -243,7 +249,8 @@ xaupersonagem (x,y) = (x+1000,y+1000)
 temGravidadeEMjogo :: Tempo -> Jogo -> Jogo 
 temGravidadeEMjogo t j = j {jogador = temGravidade t (jogador j) (mapa j) } 
 
-{-| Função que 
+{-| Função que dado um tempo, uma personagem e um mapa aplica a gravidade ao personagem consoante a posição e os blocos onde este estiver
+
 == Exemplos
 
 >>> temGravidade 10 (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0)}) ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))
@@ -255,6 +262,7 @@ temGravidade t p a@(Mapa _ _ matriz) | (blocoNaPosicao a (fst (posicao p), snd (
                                      | otherwise = p {velocidade = (fst(velocidade p),if (snd(velocidade p) < 0) || (estaEmPlataforma a p && (snd(velocidade p) > 0)) || (estaEscadaEPlat a p && snd(velocidade p) > 0) || (estaEmEscada a p && not (verificaPlataforma a p) && snd(velocidade p) > 0) || (verificaPlataAcima a p && verificaEscadaAbaixo a p && snd(velocidade p) < 0 )  then snd(velocidade p) else 0)} 
 
 {-| Função que dado um tempo e uma personagem devolve a personagem com a velocidade atualizada, fazendo isto ao acrescentar a segunda componente do par da velocidade a velocidade multiplicada pelo tempo
+
 == Exemplos
 
 >>>velocidadeGravidade 10 (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0)})
@@ -269,39 +277,74 @@ verificaPlataforma :: Mapa -> Personagem -> Bool
 verificaPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.5) == Just Plataforma = True 
                                          | otherwise = False 
 
-{-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma escada
-== Exemplos
-
->>>estaEmEscada mapa
-True
-
--}
+{-|Função que recebendo um jogo aplica ao jogador a função poeEmEscada-}
 estaEmEscadaEmJogo :: Jogo -> Jogo 
 estaEmEscadaEmJogo j = j {jogador = poeEmEscada (mapa j) (jogador j)} 
 
+{-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma escada
+
+== Exemplos
+
+>>>estaEmEscada ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+False
+
+-}
 estaEmEscada :: Mapa -> Personagem -> Bool 
 estaEmEscada a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Escada = True
                                    | otherwise = False 
+{-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma escada e caso isso aconteça altera emEscada para True
 
+== Exemplos
+
+>>>poeEmEscada ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+Personagem {velocidade = (0.0,0.0), tipo = Jogador, posicao = (1.0,1.0), direcao = Este, tamanho = (1.0,1.0), emEscada = False, ressalta = False, vida = 1, pontos = 0, aplicaDano = (True,0.0), temChave = False}
+
+-}
 poeEmEscada :: Mapa -> Personagem -> Personagem 
 poeEmEscada a@(Mapa _ _ blocos) p | estaEmEscada a p = p {emEscada = True}
                                   | otherwise = p {emEscada = False}                                  
+{-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma plataforma
 
+== Exemplos
+
+>>>estaEmPlataforma ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+False
+
+-}
 estaEmPlataforma :: Mapa -> Personagem -> Bool 
 estaEmPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Plataforma = True
                                        | otherwise = False    
+{-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma escada e por baixo está uma plataforma
 
+== Exemplos
+
+>>>estaEscadaEPlat((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+False
+
+-}
 estaEscadaEPlat :: Mapa -> Personagem -> Bool 
 estaEscadaEPlat a@(Mapa _ _ blocos) p | (verificaPlataforma a p) && (verificaEscadaAbaixo a p) = True 
-                                      | otherwise = False                                                                 
+{-| Função que dado um mapa e uma personagem verifica se o bloco a baixo corresponde a uma escada
+
+== Exemplos
+
+>>>verificaEscadaAbaixo ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+False
+
+-}                                      | otherwise = False                                                                 
 verificaEscadaAbaixo :: Mapa -> Personagem -> Bool 
 verificaEscadaAbaixo a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1.7) == Just Escada) || (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.7)== Just Escada) = True 
                                            | otherwise = False
+{-| Função que dado um mapa e uma personagem verifica se o bloco acima corresponde a uma plataforma
 
+== Exemplos
+
+>>>verificaPlataAcima ((Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]))  (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0),temChave = False}) 
+False
+-}
 verificaPlataAcima :: Mapa -> Personagem -> Bool 
 verificaPlataAcima a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))-0.7) == Just Plataforma = True 
                                          | otherwise = False                                          
-
 
 
 {-| Função que dado um jogo aplica a função perdevidainimigoEmjogo aos inimigos-}
@@ -309,7 +352,8 @@ verificaPlataAcima a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (sn
 perdevidainimigoEMjogo :: Jogo -> Jogo 
 perdevidainimigoEMjogo j = j {inimigos = perdevidainimigo (inimigos j) (jogador j) } 
 
-{-| Função que recebe uma lista de personagens e uma personagem, caso a segunda personagem tenha estiver a  a True e as hitboxes desse personagem e do primeiro personagem da lsita recebida no primeiro argumento se tocarem, então a função irá devolver  
+{-| Função que recebe uma lista de personagens e uma personagem, caso a segunda personagem tenha estiver a  a True e as hitboxes desse personagem e do primeiro personagem da lsita recebida no primeiro argumento se tocarem, então a função irá devolver
+
 == Exemplos
 
 >>>perdevidainimigo [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste},Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este}] (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0)})
@@ -329,6 +373,7 @@ perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (mapa j) (jogador j) (i
 
 
 {-| Função que recebe uma personagem no primeiro argumento e uma lista de personagens no segundo e caso haja colisão da primeira personagem com uma das da lista, a função devolve a primeira personagem com menos uma vida
+
 == Exemplos
 
 >>>perdevidaJogador (Personagem {velocidade = (0,0),tipo = Jogador,posicao = (1,1),direcao = Este,tamanho = (1,1),  emEscada = False,ressalta = False, vida = 1,pontos = 0,aplicaDano = (True,0.0)}) [Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste},Personagem {velocidade = (0,0), tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (6,12), tamanho = (1,1), aplicaDano = (False, 0), direcao = Este}]
@@ -346,6 +391,7 @@ armaEpontosJogadorEMjogo :: Tempo -> Jogo -> Jogo
 armaEpontosJogadorEMjogo t j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador t (jogador j) (colecionaveis j)}
 
 {-| Função que dada uma personagem e uma lista de colecionáveis verifica se alguma personagem colide com esses colecionáveis, e caso isso aconteça retira o colecionável do mapa
+
 == Exemplos
 
 >>>xaucolec Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste} [(Martelo, (5,1)),(Moeda, (2,1))]
@@ -359,6 +405,7 @@ xaucolec j ((col,pos):cols) | (col== Porta) && (temChave j) && sobreposicao (get
                             | otherwise = (col,pos) : xaucolec j cols       
 
 {-| Função que dada uma personagem e uma lista de colecionáveis verifica se alguma personagem colide com esses colecionáveis, e caso isso aconteça atualiza o jogador
+
 == Exemplos
 
 >>>armaEpontosJogador Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste} [(Martelo, (5,1)),(Moeda, (2,1))]
@@ -383,13 +430,7 @@ pisaalcapaoEMjogo :: Jogo -> Jogo
 pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (0,0) (mapa j)}                         
 
 
-{-| Função que dada uma poiscao e um mapa verifica se essa posição está por cima de um alçapao 
-== Exemplos
 
->>>pisaalcapao (1,1) (Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]])
-False
-
--} 
 
 {-| Função que dada uma personagem e um mapa retorna o mapa sem o alçapao se a personagem que está por cima do mesmo é do tipo jogador
 == Exemplos
@@ -398,17 +439,13 @@ False
 Mapa ((1.0,1.0),Oeste) (0.5,2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]
 
 -}
-
-
 pisaalcapaoJogador :: Personagem -> Posicao -> Mapa -> Mapa 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 []) = a 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 blocos)  = Mapa (p1, d) p2 (pisaalcapao2 p (x,y) blocos)               
 
 
-
-
-
 {-| Função que recebe uma personagem e uam posiçao e a matriz inteira e aplica a pisaalcapao a todas as linhas da matriz
+
 == Exemplos
 
 >>>
@@ -417,29 +454,39 @@ pisaalcapao2 :: Personagem -> Posicao -> [[Bloco]] -> [[Bloco]]
 pisaalcapao2 _ _ [] = []
 pisaalcapao2 p (x,y) (bloco:blocos) = pisaalcapao p (x,y) bloco : pisaalcapao2 p (x,y+1) blocos 
 
-{-| Função que recebe uma personagem e uma posição e uma linha da matriz de blocos e retorna essa linha com os alçapoes substituidso por vazio caso o jogador esteja em colisão com a mesma 
+{-| Função que dada uma poiscao e um mapa verifica se essa posição está por cima de um alçapao 
+
 == Exemplos
 
->>>
--}
+>>>pisaalcapao (1,1) (Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]])
+False
+
+-} 
 pisaalcapao :: Personagem -> Posicao -> [Bloco] -> [Bloco] 
 pisaalcapao _ _ [] = []
 pisaalcapao p (x,y) (b1:b) | tipo p == Jogador && b1 == Alcapao && sobreposicao (gethitboxcol (x,y)) (gethitbox p) = (Vazio: (pisaalcapao p (x+1,y) b))
                                      | otherwise = (b1:pisaalcapao p (x+1,y) b)
 
 {-| Função que dada uma velocidade, um tempo e uma posicao dá a posição atualizada conforme os parámetros anteriores
+
 == Exemplos
 
 >>>posicaoatualizada (1,1) 10 (10,15)
 (20.0,25.0)
 
 -}
--- Atualiza as posicoes com a velocidade 
+-- Atualiza as posicoes com a velocidade {-| Função que recebe uma personagem e uma posição e uma linha da matriz de blocos e retorna essa linha com os alçapoes substituidso por vazio caso o jogador esteja em colisão com a mesma 
+
+== Exemplos
+
+>>>
+-}
 posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
 posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
 
 
 {-| Função que dado um tempo e uma personagem aplica a função posicaoatualizada a posição do jogador utilizando os parámetros dados 
+
 == Exemplos
 
 >>>posicaoatualizadaPer (10.0) (Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste})  
@@ -453,6 +500,7 @@ posicaoatualizadaPer t a@(Mapa _ _ blocos) p = p {posicao= posicaoatualizada (ve
 
 
 {-| Função que dado um tempo e uma personagem aplica a função posicaoatualizada a posição do jogador utilizando os parámetros dados 
+
 == Exemplos
 
 >>>posicaoatualizadaPer (10.0) (Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste})  
