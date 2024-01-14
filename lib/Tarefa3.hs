@@ -36,9 +36,11 @@ matrizJogoExp =[
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]]
     
 jogoexp :: Jogo 
-jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa}  
+jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa} False 
                                                where (Mapa (pmapa,dmapa) _ _) = mapaTeste
   
+
+
 
 colec :: [(Colecionavel, Posicao)]
 colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,7)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
@@ -429,6 +431,7 @@ tiraposicoes (Mapa (a,b) c []) = []
 tiraposicoes (Mapa (a,b) c (bloco:blocos)) = fromIntegral (length bloco) : tiraposicoes (Mapa (a,b) c blocos) 
 
 movimenta :: Semente -> Tempo -> Jogo -> Jogo
-movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
-
+movimenta x t jogoexp | pausa jogoexp = jogoexp  
+                      | otherwise = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
+                      
 

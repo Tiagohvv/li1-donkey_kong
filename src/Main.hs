@@ -26,7 +26,7 @@ type EstadoGloss = (Estado,Picture)
 
 
 type Imagens = [(Imagem, Picture)]
-data Imagem = Mario | MarioO | MarioMart | MarioMartCon | MarioCai | MarioEscada | Escadaimg | Plataformaimg | Alcapaoimg | Vazioimg | Fantasmaimg | FantasmaContimg | Macaco| Jogarimg | Sairimg | Marteloimg | Moedaimg | Fundo | Vidaimg | Chaveimg | Portaimg | GameOver | N0 | N1 | N2 | N3 | N4 | N5 | Score | Estrelaimg | FundoE
+data Imagem = Mario | MarioO | MarioMart | MarioMartCon | MarioCai | MarioEscada | Escadaimg | Plataformaimg | Alcapaoimg | Vazioimg | Fantasmaimg | FantasmaContimg | Macaco| Jogarimg | Sairimg | Marteloimg | Moedaimg | Fundo | Vidaimg | Chaveimg | Portaimg | GameOver | N0 | N1 | N2 | N3 | N4 | N5 | Score | Estrelaimg | FundoE | Pausaimg
              deriving (Show, Eq)  
 
 
@@ -148,7 +148,8 @@ posicoesmapa (Mapa a b (bloco:resto)) = posicaoBlocoss bloco ++ posicoesmapa (Ma
 desenha :: Estado -> IO Picture 
 desenha e@Estado {modo= MenuInicial Sair} = return $ Pictures ([translate 0 0 (getImagem Fundo (imagens e))]++[desenhaOpcJogar (-300) 0 (imagens e), desenhaOpcSairSelec (300) 0 (imagens e)] )
 desenha e@Estado {modo = MenuInicial Jogar} = return $ Pictures ([translate 0 0 (getImagem Fundo (imagens e))] ++[desenhaOpcJogarSelec (-300) 0 (imagens e), desenhaOpcSair (300) 0 (imagens e)])   
-desenha e@Estado {modo= EmJogo} | sobreposicao (gethitbox (jogador (jogo e))) (gethitboxcol (13,3)) = return $ translate 0 0 (Scale 1 1 (getImagem FundoE (imagens e)))
+desenha e@Estado {modo= EmJogo} | pausa (jogo e) = return $ translate 0 0 (Scale 9 9 (getImagem Pausaimg (imagens e)))
+                                | sobreposicao (gethitbox (jogador (jogo e))) (gethitboxcol (13,3)) = return $ translate 0 0 (Scale 1 1 (getImagem FundoE (imagens e)))
                                 | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 4 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ [desenhaVidas 3 0 (imagens e)] ++(desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
                                 | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 3 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
                                 | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 2 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
@@ -193,6 +194,9 @@ reageEventGloss (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {modo = MenuIn
   return e {modo = MenuInicial Jogar} 
 reageEventGloss (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {modo = MenuInicial Sair} = exitSuccess
 
+
+reageEventGloss (EventKey (Char 'p') Down _ _) e@Estado {modo = EmJogo} =
+  return e {jogo = (jogo e) {pausa = not (pausa (jogo e))}}
 reageEventGloss (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {modo = EmJogo} =
   return e {modo = MenuInicial Jogar}
 reageEventGloss (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {modo = EmJogo} =
@@ -280,9 +284,10 @@ loadimages estado = do
   score <- loadBMP "imagensbmp/score.bmp"
   estrela <- loadBMP "imagensbmp/estrela.bmp"
   fundoE <- loadBMP "imagensbmp/fundoestrela.bmp"
+  pausa <- loadBMP "imagensbmp/pause.bmp"
 
  
 
-  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario), (Jogarimg,jogar), (Sairimg,sair), (MarioO,marioO), (Vazioimg,vazio), (Marteloimg,martelo),(Moedaimg,moeda),(Fantasmaimg,fantasma), (Fundo,fundo), (MarioMart,marioMart), (MarioMartCon, marioMartCon), (MarioCai,marioCai), (FantasmaContimg,fantasmaCont),(Macaco,macaco), (Vidaimg,vida), (GameOver,gameover), (N0,n0), (N1,n1), (N2,n2),(N3,n3),(N4,n4),(N5,n5), (Score,score), (MarioEscada,marioEscada),(Chaveimg,chave),(Portaimg,porta),(Estrelaimg,estrela), (FundoE,fundoE)]}
+  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario), (Jogarimg,jogar), (Sairimg,sair), (MarioO,marioO), (Vazioimg,vazio), (Marteloimg,martelo),(Moedaimg,moeda),(Fantasmaimg,fantasma), (Fundo,fundo), (MarioMart,marioMart), (MarioMartCon, marioMartCon), (MarioCai,marioCai), (FantasmaContimg,fantasmaCont),(Macaco,macaco), (Vidaimg,vida), (GameOver,gameover), (N0,n0), (N1,n1), (N2,n2),(N3,n3),(N4,n4),(N5,n5), (Score,score), (MarioEscada,marioEscada),(Chaveimg,chave),(Portaimg,porta),(Estrelaimg,estrela), (FundoE,fundoE), (Pausaimg,pausa)]}
 
 
