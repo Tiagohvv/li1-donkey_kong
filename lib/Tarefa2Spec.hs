@@ -3,6 +3,15 @@ module Tarefa2Spec (testesTarefa2) where
 import LI12324
 import Tarefa2 (valida)
 import Test.HUnit
+import Tarefa3 
+
+
+
+
+
+
+
+
 
 mapa01 :: Mapa
 mapa01 =
@@ -36,6 +45,21 @@ inimigoModelo =
       pontos = 0,
       aplicaDano = (False, 0)
     }
+    
+    
+inimigoModelo1 =    
+    Personagem
+    { velocidade = (0.0, 0.0),
+      tipo = Fantasma,
+      posicao = (2.5, 7.6),
+      direcao = Este,
+      tamanho = (1, 1),
+      emEscada = False,
+      ressalta = True,
+      vida = 1,
+      pontos = 0,
+      aplicaDano = (False, 0)
+    }
 
 jogadorParado =
   Personagem
@@ -55,7 +79,7 @@ jogo01 :: Jogo
 jogo01 =
   Jogo
     { mapa = mapa01,
-      inimigos = [inimigoModelo, inimigoModelo],
+      inimigos = [inimigoModelo, inimigoModelo1],
       colecionaveis = [],
       jogador = jogadorParado
     }

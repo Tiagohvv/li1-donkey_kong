@@ -11,9 +11,10 @@ import LI12324
 import Data.Fixed (E0)
 
 
+
 colisoesParede :: Mapa -> Personagem -> Bool
-colisoesParede (Mapa (_, _) _ mapaTeste) per2 | fora (posicao per2) == True = True
-                                              | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) = True
+colisoesParede (Mapa (_, _) _ mapaTeste) per2 | fora (per2) == True = True
+                                              | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) == True = True
                                               | otherwise = False
 
 
@@ -25,15 +26,15 @@ colisoesPersonagens per1 per2 | sobreposicao (criaHitbox per1) (criaHitbox per2)
 
 
 {-| Função que dada a posição do jogador devolve True se este estiver fora do mapa e False se o jogador estiver dentro do mapa
-matrizJogoExp
+
 == Exemplos
 fora (44.0,22.0)
 >>> True
 -}
 
-fora :: (Double,Double) -> Bool
-fora (x,y) | x >= 42 || y >= 18 = True
-           | otherwise = False
+fora :: Personagem -> Bool
+fora x | fst (posicao x) >= 42 || fst (posicao x) <= 0 || snd (posicao x) <= 0 || snd (posicao x) >= 18 = True
+       | otherwise = False
                                             
 
 {-| Função que testa se duas Hitboxs estão a colidir.
@@ -44,11 +45,25 @@ fora (x,y) | x >= 42 || y >= 18 = True
 True
 -}
 
-sobreposicao :: Hitbox -> Hitbox -> Bool
-sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
-                                                       | otherwise = False                                                 
+-- Tiago
+--sobreposicao :: Hitbox -> Hitbox -> Bool
+--sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
+--                                                       | otherwise = False
 
-{-| Função que testa se duas Hitboxs estão a colidir. 
+--sobreposicao :: Hitbox -> Hitbox -> Bool
+--sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | (x3>= x1 && x3<=x2 || x4>=x1 && x4<=x2) && ( y3>=y1 && y3<=y2|| y4>=y1 && y4<=y2)  = True
+--                                                       | otherwise = False                    
+
+sobreposicao :: Hitbox -> Hitbox -> Bool
+sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | ((x3>= x1 && x3<=x2)&& ((y3>=y1 && y3<=y2) || (y4>=y1 && y4<=y2))) || ((y1==y3 &&y2==y4)&& ((x3>=x1 && x3<=x2) || (x4>=x1 && x4<=x2))) || ((x3==x1 && x4==x2)&&((y3>=y1 && y3<=y2)|| (y4>=y1 && y4<=y2))) || (x3==x2 && ((y3>=y1 && y3<=y2)|| (y4<=y2 &&y4>=y1))) || (x4==x1 && ((y4<=y2 && y4>=y1)|| (y3<=y2 && y3>=y1))) || ((x3>=x1 && x3<=x2)&&(y4<=y2 && y4>=y1)) || ((x1>=x3 && x1<=x4)&&(y2<=y4 && y2>=y3)) = True
+                                                       | otherwise = False                                                                                   
+
+--sobreposicao :: Hitbox -> Hitbox -> Bool 
+--sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) 
+ --  | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7 <= p3) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8 <= p4) = True
+ --  |otherwise = False
+
+{-| Função que testa se uma Hitbox esta a colidir comu a lista de Hitboxs
 
 == Exemplos
 
@@ -71,7 +86,7 @@ colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4))
 -}
 posicaoBlocos :: Posicao -> [[Bloco]] -> [Posicao]
 posicaoBlocos _ [] = []
-posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 10) t
+posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 1) t
 
 
 
@@ -85,8 +100,8 @@ posicaoBlocos (x, y) (h:t) = posicaoBlocop (x, y) h ++ posicaoBlocos (x, y + 10)
 posicaoBlocop :: Posicao -> [Bloco] -> [Posicao]
 posicaoBlocop _ [] = []
 posicaoBlocop (x, y) (h:t)
-    | h == Vazio = posicaoBlocop (x + 10, y) t
-    | otherwise = (x, y) : posicaoBlocop (x + 10, y) t
+    | h == Vazio = posicaoBlocop (x + 1, y) t
+    | otherwise = (x, y) : posicaoBlocop (x + 1, y) t
 
 
 
@@ -122,6 +137,19 @@ criaHitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tam
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 posicaoBlocoss :: [Bloco] -> [Posicao]
 posicaoBlocoss [] = []
 posicaoBlocoss (bloco:resto)
@@ -135,8 +163,8 @@ blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
 blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length blocos && round x < length (head blocos) && x >= 0 = Just (blocos !! round y !! round x)
                                         | otherwise = Nothing
                       
-
-
+                                                 
+                    
 
  -- Não é necessário para o jogo funcionar                                                
 

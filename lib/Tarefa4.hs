@@ -12,9 +12,72 @@ import LI12324
 import Data.Bool (Bool)
 import Tarefa1
 import Tarefa2
-import Tarefa3 
+import Tarefa3 (verificaPlataforma)
 
 
+atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
+atualiza a acao jogo | acao == Just Subir && estaEmEscada (mapa jogo) (jogador jogo) = jogo {jogador = velocidadesobe (jogador jogo) }
+                     | acao == Just Descer && estaEmEscada (mapa jogo) (jogador jogo)  = jogo {jogador = velocidadedesce (jogador jogo) }
+                     | acao == Just AndarDireita && not (estaEmEscada (mapa jogo) (jogador jogo)) = jogo {jogador = velocidadeDireita (jogador jogo) }
+                     | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined 
+                     | acao == Just AndarEsquerda && not (estaEmEscada (mapa jogo) (jogador jogo)) = jogo {jogador = velocidadeEsquerda (jogador jogo) }
+                     | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined   
+                     | acao == Just Saltar && verificaPlataforma (mapa jogo) (jogador jogo) && emEscada (jogador jogo) == False = jogo {jogador = saltar (jogador jogo)}     
+                     | acao == Just Parar = jogo {jogador = parar (jogador jogo)}                   
+                     | otherwise = jogo 
+
+
+{-|Função que verifica se uma personagem está a colidir com uma escada-}
+--Função que verifica se uma personagem está a colidir com uma escada
+estaEmEscada :: Mapa -> Personagem -> Bool 
+estaEmEscada a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Escada = True
+                                   | otherwise = False  
+
+{-|Função que altera a velociadade da personagem para (0,0)-}                                         
+-- Função que altera a velociadade da personagem para 0
+parar :: Personagem -> Personagem 
+parar p = p{velocidade = (0,0)}
+
+{-|Função que altera a segunda componente da velocidade de uma personagem para -5 -} 
+saltar :: Personagem -> Personagem 
+saltar p = p {velocidade = (fst (velocidade p), -5)}
+
+{-|Função que dada uma personagem altera a direção da personagem se esta for este para oeste e vice-versa -} 
+andaparatras :: Personagem -> Personagem 
+andaparatras p | direcao p == Este = p{direcao = Oeste}
+               | direcao p == Oeste = p{direcao = Este} 
+               | otherwise = p 
+{-|Função que dada uma personagem altera a velociadade da personagem para -3 se a direção for este ou oeste e altera a direção para oeste se a direção da personagem for este, caso contrário devolve a personagem sem alterações -} 
+velocidadeEsquerda :: Personagem -> Personagem 
+velocidadeEsquerda p | direcao p == Oeste = p{velocidade = (-3,snd (velocidade p))}
+                     | direcao p == Este = p{direcao = Oeste, velocidade = (-3,snd (velocidade p))}
+                     | otherwise = p 
+{-|Função que dada uma personagem altera a velociadade da personagem para 3 se a direção for este ou oeste e altera a direção para este se a direção da personagem for oeste, caso contrário devolve a personagem sem alterações -} 
+velocidadeDireita :: Personagem -> Personagem 
+velocidadeDireita p | direcao p == Este = p {velocidade= (3,snd (velocidade p))}
+                    | direcao p == Oeste = p {direcao = Este, velocidade= (3,snd (velocidade p))}
+                    |otherwise = p  
+
+{-|Função que dada uma personagem altera a segunda componente da velocidade para -3 -} 
+velocidadesobe :: Personagem -> Personagem 
+velocidadesobe p = p {velocidade = (0,-3)} 
+
+{-|Função que dada uma personagem altera a primeira componente da velocidade para 3 -} 
+velocidadedesce :: Personagem -> Personagem 
+velocidadedesce p = p {velocidade = (0,3)} 
+
+
+
+--estaEscadaEPlat :: Mapa -> Personagem -> Bool 
+--estaEscadaEPlat a@(Mapa _ _ blocos) p | verificaPlataforma a p  
+
+
+
+
+
+
+
+{-
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
 --atualiza  acoesInimigos [per,per3] x jogo = undefined 
 atualiza y x jogo = jogo {
@@ -67,4 +130,4 @@ atualizaInimigos (x:y) (h:t) | x == Just AndarDireita = h { direcao = Este} : at
                              | x == Just AndarEsquerda = h { direcao = Oeste} : atualizaInimigos y t 
                              | otherwise = h : atualizaInimigos y t                                
 
-
+-}

@@ -80,7 +80,7 @@ gameMap2 = Mapa ((8.5, 6.5), Este) (5, 1.5) blocos2
 teste5 = "T5: Alcapao e removido por jogador mas nao pelo inimigo." ~: gameMap2 ~=? (mapa $ movimenta 100 1.0 j7)
 
 pl6 = Personagem (0.0,0.0) Jogador (5,1) Oeste (1,1) False False 10 0 (False, 0.0)
-c2 = (Martelo, (5,1))
+c2 = (Moeda, (5,1))
 
 j8 = Jogo gameMap1 [] [c2] pl6
 
