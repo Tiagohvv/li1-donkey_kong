@@ -292,13 +292,7 @@ posicaovaz (x, y) (h:t)
 
 
 
-
-
-
-posicaoBlocos :: Bloco -> [[Bloco]] -> [Posicao] 
-posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
-                                   colunas <- [0 .. (length matriz)-1]  
-                                 , linhas  <- elemIndices bloco (matriz !! colunas)]  
+ 
             
 
 
