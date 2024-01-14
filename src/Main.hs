@@ -26,7 +26,7 @@ type EstadoGloss = (Estado,Picture)
 
 
 type Imagens = [(Imagem, Picture)]
-data Imagem = Mario | MarioO | MarioMart | MarioMartCon | MarioCai | Escadaimg | Plataformaimg | Alcapaoimg | Vazioimg | Fantasmaimg | FantasmaContimg | Macaco| Jogarimg | Sairimg | Marteloimg | Moedaimg | Fundo | Vida | GameOver | N0 | N1 | N2 | N3 | N4 | N5 | Score 
+data Imagem = Mario | MarioO | MarioMart | MarioMartCon | MarioCai | MarioEscada | Escadaimg | Plataformaimg | Alcapaoimg | Vazioimg | Fantasmaimg | FantasmaContimg | Macaco| Jogarimg | Sairimg | Marteloimg | Moedaimg | Fundo | Vidaimg | Chaveimg | Portaimg | GameOver | N0 | N1 | N2 | N3 | N4 | N5 | Score | Estrelaimg | FundoE
              deriving (Show, Eq)  
 
 
@@ -80,7 +80,7 @@ desenhaMapa x y (Mapa (a ,b) c (linhabloco : restos)) imgs = linha ++ resto
                 resto = desenhaMapa x (y-l) (Mapa (a,b) c restos) imgs  
 
 desenhaVidas :: Float -> Float -> Imagens -> Picture 
-desenhaVidas x y imgs = translate ((x *escala)-920) ((y *escala)+500) (Scale 2 2 (getImagem Vida imgs)) 
+desenhaVidas x y imgs = translate ((x *escala)-920) ((y *escala)+500) (Scale 2 2 (getImagem Vidaimg imgs)) 
 
 desenhaScore1 :: Float -> Float -> Imagens -> Picture 
 desenhaScore1 x y imgs = translate ((x *escala)-920) ((y *escala)+500) (Scale 3 3 (getImagem Score imgs))
@@ -93,13 +93,21 @@ desenhaScore x y p imgs | pontos p == 0 = translate ((x *escala)-920) ((y *escal
                         | pontos p == 4 =translate ((x *escala)-920) ((y *escala)+500) (Scale 2 2 (getImagem N4 imgs))
                         | otherwise = translate ((x *escala)-920) ((y *escala)+500) (Scale 2 2 (getImagem N5 imgs))
 
+desenhaChave :: Float -> Float -> Imagens -> Personagem -> Picture 
+desenhaChave x y imgs p = translate ((x *escala)-920) ((y *escala)+500) (Scale 0.05 0.05 (getImagem Chaveimg imgs))
 
+
+desenhaEstrela :: Mapa -> Imagens -> Picture 
+desenhaEstrela (Mapa _ (x,y) _) imgs = translate ((double2Float x *escala)-920) ((double2Float (negate y) *escala)+500) (Scale 0.1 0.1 (getImagem Estrelaimg imgs))
 
 
 desenhaColec :: Imagens -> [(Colecionavel, Posicao)] -> [Picture]
 desenhaColec _ [] = []
-desenhaColec imgs ((col,pos):cols) | col == Martelo = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 2.3 2.3 (getImagem Marteloimg imgs)) : desenhaColec imgs cols 
+desenhaColec imgs ((col,pos):cols) | col == Martelo = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 2.7 2.7 (getImagem Marteloimg imgs)) : desenhaColec imgs cols 
                                    | col == Moeda = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 0.6 0.6 (getImagem Moedaimg imgs)) : desenhaColec imgs cols
+                                   | col == Vida = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 2 2 (getImagem Vidaimg imgs)) : desenhaColec imgs cols
+                                   | col == Chave = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 0.1 0.1 (getImagem Chaveimg imgs)) : desenhaColec imgs cols
+                                   | col == Porta = translate ((double2Float (fst pos) *escala)-920) ((double2Float (negate (snd pos))*escala)+500) (Scale 1 6.7 (getImagem Portaimg imgs)) : desenhaColec imgs cols
                                    | otherwise = desenhaColec imgs cols 
 
 
@@ -113,16 +121,18 @@ desenhaFantasma imgs (h:t) | tipo h == MacacoMalvado = translate ((double2Float 
 
 
 desenhaMario :: Imagens -> Personagem -> Picture 
-desenhaMario imgs p | ((direcao p)==Este) && (fst (aplicaDano p) == True ) && (snd (aplicaDano p)>0 ) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem3)  
-                    | ((direcao p)==Oeste) && (fst (aplicaDano p) == True ) && (snd (aplicaDano p)>0 ) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem4)                       
-                    | (direcao p)== Este && (snd (velocidade p) <= 0) =  translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem) 
-                    | (snd (velocidade p) > 0) && (emEscada p == False) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem5) 
+desenhaMario imgs p | (snd (velocidade p) > 0) && (emEscada p == False) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem5)
+                    | (emEscada p) && (fst (velocidade p))==0  =  translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem6)
+                    | ((direcao p)==Este) && (fst (aplicaDano p) == True ) && (snd (aplicaDano p)>0 ) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem3)  
+                    | ((direcao p)==Oeste) && (fst (aplicaDano p) == True ) && (snd (aplicaDano p)>0 ) = translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem4)                      
+                    | (direcao p)== Este && (snd (velocidade p) <= 0) =  translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem)   
                     | otherwise =  translate ((double2Float (fst (posicao p))*escala)-920)  ( (double2Float (negate (snd (posicao p)))*escala)+500) (Scale 2.7 2.5 imagem2)  
                                  where imagem = getImagem Mario imgs
                                        imagem2 = getImagem MarioO imgs
                                        imagem3 = getImagem MarioMart imgs
                                        imagem4 = getImagem MarioMartCon imgs 
                                        imagem5 = getImagem MarioCai imgs
+                                       imagem6 = getImagem MarioEscada imgs 
 
 
 desenhaHitbox :: Personagem -> Color -> Picture 
@@ -138,16 +148,20 @@ posicoesmapa (Mapa a b (bloco:resto)) = posicaoBlocoss bloco ++ posicoesmapa (Ma
 desenha :: Estado -> IO Picture 
 desenha e@Estado {modo= MenuInicial Sair} = return $ Pictures ([translate 0 0 (getImagem Fundo (imagens e))]++[desenhaOpcJogar (-300) 0 (imagens e), desenhaOpcSairSelec (300) 0 (imagens e)] )
 desenha e@Estado {modo = MenuInicial Jogar} = return $ Pictures ([translate 0 0 (getImagem Fundo (imagens e))] ++[desenhaOpcJogarSelec (-300) 0 (imagens e), desenhaOpcSair (300) 0 (imagens e)])   
-desenha e@Estado {modo= EmJogo} | vida (jogador (jogo e)) == 3 = return $ Pictures ([desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
-                                | vida (jogador (jogo e)) == 2 = return $ Pictures ([desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
-                                | vida (jogador (jogo e)) == 1 = return $ Pictures ([desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
-                                | otherwise = return $ translate 0 0 (Scale 9 9 (getImagem GameOver (imagens e)))
+desenha e@Estado {modo= EmJogo} | sobreposicao (gethitbox (jogador (jogo e))) (gethitboxcol (13,3)) = return $ translate 0 0 (Scale 1 1 (getImagem FundoE (imagens e)))
+                                | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 4 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ [desenhaVidas 3 0 (imagens e)] ++(desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
+                                | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 3 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
+                                | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 2 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
+                                | temChave (jogador (jogo e)) && vida (jogador (jogo e)) == 1 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaChave 27 0 (imagens e) (jogador (jogo e))] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
+                                | (not (temChave (jogador (jogo e)))) && vida (jogador (jogo e)) == 4 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ [desenhaVidas 3 0 (imagens e)] ++(desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
+                                | (not (temChave (jogador (jogo e)))) &&  vida (jogador (jogo e)) == 3 = return $ Pictures([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ [desenhaVidas 2 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e)))) 
+                                | (not (temChave (jogador (jogo e)))) && vida (jogador (jogo e)) == 2 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ [desenhaVidas 1 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
+                                | (not (temChave (jogador (jogo e)))) && vida (jogador (jogo e)) == 1 = return $ Pictures ([desenhaEstrela (mapa (jogo e)) (imagens e)] ++[desenhaScore1 29 0 (imagens e)]++ [desenhaScore 30.5 0 (jogador (jogo e)) (imagens e)]++[desenhaVidas 0 0 (imagens e)] ++ (desenhaMapa 0 0 (sacaMapa (jogo e)) (imagens e))++ [desenhaMario (imagens e) (sacaJogador (jogo e))]++ (desenhaFantasma (imagens e) (inimigos (jogo e))) ++ (desenhaColec (imagens e) (sacaCol (jogo e))))
+                                | otherwise = return $ translate 0 0 (Scale 9 9 (getImagem GameOver (imagens e)))  
+                                
                                 
 
  
-   
-
-
 sacaCol :: Jogo -> [(Colecionavel, Posicao)] 
 sacaCol j = colecionaveis j 
 
@@ -244,6 +258,7 @@ loadimages estado = do
   marioMart <- loadBMP "imagensbmp/MarioMartelo.bmp"
   marioMartCon <- loadBMP "imagensbmp/MarioMarteloContrario.bmp"
   marioCai <- loadBMP "imagensbmp/MarioCai.bmp"
+  marioEscada <- loadBMP "imagensbmp/marioEscada.bmp"
   fantasma <- loadBMP "imagensbmp/fantasma.bmp"
   fantasmaCont <- loadBMP "imagensbmp/fantasmaContrario.bmp"
   macaco <- loadBMP "imagensbmp/macaco.bmp"
@@ -253,6 +268,8 @@ loadimages estado = do
   moeda <- loadBMP "imagensbmp/moeda.bmp"
   fundo <- loadBMP "imagensbmp/fundo.bmp"
   vida <- loadBMP "imagensbmp/vida.bmp" 
+  chave <- loadBMP "imagensbmp/chave.bmp"
+  porta <- loadBMP "imagensbmp/porta.bmp"
   gameover <- loadBMP "imagensbmp/gameover.bmp"
   n0 <- loadBMP "imagensbmp/pontos0.bmp"
   n1 <- loadBMP "imagensbmp/pontos1.bmp"
@@ -261,9 +278,11 @@ loadimages estado = do
   n4 <- loadBMP "imagensbmp/pontos4.bmp"
   n5 <- loadBMP "imagensbmp/pontos5.bmp" 
   score <- loadBMP "imagensbmp/score.bmp"
+  estrela <- loadBMP "imagensbmp/estrela.bmp"
+  fundoE <- loadBMP "imagensbmp/fundoestrela.bmp"
 
  
 
-  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario), (Jogarimg,jogar), (Sairimg,sair), (MarioO,marioO), (Vazioimg,vazio), (Marteloimg,martelo),(Moedaimg,moeda),(Fantasmaimg,fantasma), (Fundo,fundo), (MarioMart,marioMart), (MarioMartCon, marioMartCon), (MarioCai,marioCai), (FantasmaContimg,fantasmaCont),(Macaco,macaco), (Vida,vida), (GameOver,gameover), (N0,n0), (N1,n1), (N2,n2),(N3,n3),(N4,n4),(N5,n5), (Score,score)]}
+  return estado {imagens = [(Plataformaimg,plataforma), (Alcapaoimg,alcapao), (Escadaimg,escada), (Mario,mario), (Jogarimg,jogar), (Sairimg,sair), (MarioO,marioO), (Vazioimg,vazio), (Marteloimg,martelo),(Moedaimg,moeda),(Fantasmaimg,fantasma), (Fundo,fundo), (MarioMart,marioMart), (MarioMartCon, marioMartCon), (MarioCai,marioCai), (FantasmaContimg,fantasmaCont),(Macaco,macaco), (Vidaimg,vida), (GameOver,gameover), (N0,n0), (N1,n1), (N2,n2),(N3,n3),(N4,n4),(N5,n5), (Score,score), (MarioEscada,marioEscada),(Chaveimg,chave),(Portaimg,porta),(Estrelaimg,estrela), (FundoE,fundoE)]}
 
 

@@ -66,6 +66,9 @@ data Entidade
 data Colecionavel
   = Moeda
   | Martelo
+  | Vida
+  | Chave
+  | Porta 
   deriving (Ord, Eq, Read, Show)
 
 -- | Personagem do 'Jogo'.
@@ -81,6 +84,7 @@ data Personagem =
     , vida       :: Int -- ^ não negativo
     , pontos     :: Int
     , aplicaDano :: (Bool, Double) -- ^ se está armado e por quanto tempo ainda
+    , temChave   :: Bool 
     }
   deriving (Eq, Read, Show)
 

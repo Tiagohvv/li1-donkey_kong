@@ -12,11 +12,11 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((9,6), Oeste) (0.5, 2.5) matrizJogoExp
+mapaTeste = Mapa ((9,6), Oeste) (13,3) matrizJogoExp
 
 matrizJogoExp :: [[Bloco]]
 matrizJogoExp =[
-     [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio]
+     [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
     ,[Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio,Vazio, Vazio,Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio,Vazio,Vazio]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio,Vazio, Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio,Vazio,Vazio]
@@ -36,10 +36,12 @@ matrizJogoExp =[
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]]
     
 jogoexp :: Jogo 
-jogoexp = Jogo mapaTeste inimigo colec player  
+jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa}  
+                                               where (Mapa (pmapa,dmapa) _ _) = mapaTeste
+  
 
 colec :: [(Colecionavel, Posicao)]
-colec = [(Moeda, (2,6)), (Martelo, (2,16))]
+colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,7)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
@@ -51,7 +53,8 @@ inimigo = [Personagem {velocidade = (0,0),
                     posicao = (4,6), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Oeste}   
+                    direcao = Oeste,
+                    temChave = False }
                     ,
                     
           Personagem {velocidade = (0,0), 
@@ -60,10 +63,11 @@ inimigo = [Personagem {velocidade = (0,0),
                     vida = 1, 
                     pontos = 0, 
                     ressalta = True, 
-                    posicao = (6,8), 
+                    posicao = (11,8), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Este}  
+                    direcao = Este,
+                    temChave = False}  
                     ,
           Personagem {velocidade = (0,0), 
                     tipo = Fantasma, 
@@ -74,7 +78,20 @@ inimigo = [Personagem {velocidade = (0,0),
                     posicao = (16,16), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Oeste} 
+                    direcao = Oeste,
+                    temChave = False} 
+                    , 
+          Personagem {velocidade = (0,0), 
+                    tipo = Fantasma, 
+                    emEscada = False, 
+                    vida = 1, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (19,12), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Este,
+                    temChave = False} 
                     , 
           Personagem {velocidade = (0,0), 
                     tipo = MacacoMalvado, 
@@ -85,22 +102,23 @@ inimigo = [Personagem {velocidade = (0,0),
                     posicao = (15,2.2), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Oeste}           
+                    direcao = Oeste,
+                    temChave = False}           
                     ]
 
 
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
-                     posicao = (6,5),
+                     posicao = (5,2),
                      direcao = Este,
                      tamanho = (1,1), 
                      emEscada = False,
                      ressalta = False,
                      vida = 3,
                      pontos = 0,
-                     aplicaDano = (False,0.0)
-                     }
+                     aplicaDano = (False,0.0),                    
+                     temChave = True}
 
 gethitbox :: Personagem -> Hitbox 
 gethitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
@@ -153,7 +171,7 @@ temGravidadeEMjogo t j = j {jogador = temGravidade t (jogador j) (mapa j) }
 
 temGravidade :: Tempo -> Personagem -> Mapa -> Personagem                    
 temGravidade t p a@(Mapa _ _ matriz) | (blocoNaPosicao a (fst (posicao p), snd (posicao p) +0.5) /= Just Plataforma && blocoNaPosicao a (fst (posicao p), snd (posicao p) +0.5) /= Just Alcapao) && not (estaEmEscada a p) = velocidadeGravidade t p 
-                                     | otherwise = p {velocidade = (fst(velocidade p),if (snd(velocidade p) < 0) || (estaEmPlataforma a p && ((snd(velocidade p) > 0) || snd(velocidade p) < 0)) || (estaEscadaEPlat a p && snd(velocidade p) > 0) || (estaEmEscada a p && not (verificaPlataforma a p) && snd(velocidade p) > 0) then snd(velocidade p) else 0)} 
+                                     | otherwise = p {velocidade = (fst(velocidade p),if (snd(velocidade p) < 0) || (estaEmPlataforma a p && (snd(velocidade p) > 0)) || (estaEscadaEPlat a p && snd(velocidade p) > 0) || (estaEmEscada a p && not (verificaPlataforma a p) && snd(velocidade p) > 0) || (verificaPlataAcima a p && verificaEscadaAbaixo a p && snd(velocidade p) < 0 )  then snd(velocidade p) else 0)} 
 
 
 velocidadeGravidade :: Tempo -> Personagem -> Personagem 
@@ -183,8 +201,12 @@ estaEscadaEPlat :: Mapa -> Personagem -> Bool
 estaEscadaEPlat a@(Mapa _ _ blocos) p | (verificaPlataforma a p) && (verificaEscadaAbaixo a p) = True 
                                       | otherwise = False                                                                 
 verificaEscadaAbaixo :: Mapa -> Personagem -> Bool 
-verificaEscadaAbaixo a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1.5) == Just Escada) || (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1)== Just Escada) = True 
+verificaEscadaAbaixo a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1.7) == Just Escada) || (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.7)== Just Escada) = True 
                                            | otherwise = False
+
+verificaPlataAcima :: Mapa -> Personagem -> Bool 
+verificaPlataAcima a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))-0.7) == Just Plataforma = True 
+                                         | otherwise = False                                          
 
 
 
@@ -295,15 +317,21 @@ armaEpontosJogadorEMjogo j = j {colecionaveis = xaucolec (jogador j) (colecionav
 
 xaucolec :: Personagem -> [(Colecionavel, Posicao)] -> [(Colecionavel, Posicao)]
 xaucolec j [] = []
-xaucolec j ((col,pos):cols) | sobreposicao (gethitbox j) (gethitboxcol pos) = (col,xaupersonagem pos) : xaucolec j cols 
+xaucolec j ((col,pos):cols) | (col== Porta) && (temChave j) && sobreposicao (gethitbox j) (gethitboxcol pos) = (col,xaupersonagem pos) : xaucolec j cols 
+                            | (sobreposicao (gethitbox j) (gethitboxcol pos)) && (not (col==Porta))  = (col,xaupersonagem pos) : xaucolec j cols 
                             | otherwise = (col,pos) : xaucolec j cols       
 
 
 armaEpontosJogador :: Personagem -> [(Colecionavel, Posicao)] -> Personagem 
 armaEpontosJogador j [] = j 
 armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador (j {aplicaDano = (True, 10)}) cols
-                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador (j {pontos = (pontos j) +1}) cols  
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador (j {pontos = (pontos j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Vida) = armaEpontosJogador (j {vida = (vida j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Chave) = armaEpontosJogador (j {temChave = True}) cols
                                 | otherwise = armaEpontosJogador j cols 
+
+
+
 
 
 -- Função que faz um alçapão desaparecer se o jogador o pisar  
@@ -317,7 +345,7 @@ pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (0,0) (mapa j)}
 pisaalcapaoJogador :: Personagem -> Posicao -> Mapa -> Mapa 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 []) = a 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 blocos)  = Mapa (p1, d) p2 (pisaalcapao2 p (x,y) blocos)               
-
+{-
 trocarBlocoNaPosicao :: Bloco -> Bloco -> Posicao -> [[Bloco]] -> [[Bloco]]
 trocarBlocoNaPosicao _ _ _ [] = []  
 trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
@@ -329,7 +357,7 @@ trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
     trocarLinhaNaPosicao antigo novo coluna (b:bs)
       | coluna == 0 = novo : bs  
       | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs
-
+-}
 
 pisaalcapao2 :: Personagem -> Posicao -> [[Bloco]] -> [[Bloco]]
 pisaalcapao2 _ _ [] = []
@@ -345,30 +373,7 @@ hitboxAlcapao [] = []
 hitboxAlcapao blocos = gethitboxcol (head (blocos)) : hitboxAlcapao (tail blocos) 
                            
 
-tiraposicoesAlca :: Mapa -> [Posicao] 
-tiraposicoesAlca a@(Mapa _ _ (blocos)) = posicaoBlocos1 Alcapao blocos 
 
-desapareceAlcapaoJogo :: Jogo -> Jogo
-desapareceAlcapaoJogo j = j {mapa = desapareceAlcapao (mapa j) (jogador j) }
-
-aplicaEfeitoAlcapao :: ((Int, Int), Bloco) -> Personagem -> Bloco
-aplicaEfeitoAlcapao ((x, y), bloco) p =
-  case gethitbox p of
-    ((xi, yi), (xs, ys)) ->
-      let
-        xchao = floor xs
-        ychao = floor ys
-        xchao2 = floor xi
-        ychao2 = floor ys
-      in
-        if bloco == Alcapao && (y == ychao || y == ychao2) && (x == xchao || x == xchao2)
-          then Vazio
-          else bloco
-
-desapareceAlcapao :: Mapa -> Personagem -> Mapa
-desapareceAlcapao (Mapa (pi,di) pf blocos) p = 
-  let posicoesEblocos = zipWith (\x y -> zipWith (\bloco x -> ((x,y), bloco)) x [0..]) blocos [0..]
-   in Mapa (pi,di) pf (map (\x -> map (\bloco -> aplicaEfeitoAlcapao bloco p) x) posicoesEblocos)
 
 
 -- Atualiza as posicoes com a velocidade 
@@ -387,7 +392,7 @@ posicaoatualizadaPerEmjogo :: Tempo -> Jogo -> Jogo
 posicaoatualizadaPerEmjogo t j = j {jogador = posicaoatualizadaPer t (mapa j) (jogador j) , inimigos = posicaoatualizadaIni t (mapa j) (inimigos j) } 
 
 limitesEmJogo :: Jogo -> Jogo 
-limitesEmJogo j = j {inimigos = limitesIni (mapa j) (inimigos j), jogador = limites (mapa j) (jogador j) } 
+limitesEmJogo j = j {inimigos = limitesIniTodos (mapa j) (inimigos j), jogador = limites (mapa j) (jogador j) } 
 
 verificaIniO :: Mapa -> Personagem -> Bool 
 verificaIniO a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))-1, (snd (posicao p))+1) == Just Vazio) = True 
@@ -396,15 +401,25 @@ verificaIniO a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (po
 verificaIniE :: Mapa -> Personagem -> Bool 
 verificaIniE a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))+1, (snd (posicao p))+1) == Just Vazio) = True 
                                    | otherwise = False 
-
+{-
 limitesIni :: Mapa -> [Personagem] -> [Personagem]
 limitesIni _ [] = []
 limitesIni a@(Mapa _ _ (bloco:blocos)) (h:t) | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } : limitesIni a t
                                              | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este} : limitesIni a t 
                                              | otherwise = (h:t)
+-}
+
+limitesIni :: Mapa -> Personagem -> Personagem
+limitesIni a@(Mapa _ _ (bloco:blocos)) h | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } 
+                                         | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este}  
+                                         | otherwise = h
+limitesIniTodos :: Mapa -> [Personagem] -> [Personagem]
+limitesIniTodos a@(Mapa _ _ (bloco:blocos)) l = map (limitesIni a) l 
+
 
 limites :: Mapa -> Personagem -> Personagem 
-limites a@(Mapa _ _ (bloco:blocos)) p | (fst (posicao p) >= fromIntegral (length bloco)) = p {posicao = (fromIntegral (length bloco)-1, snd (posicao p))} 
+limites a@(Mapa _ _ (bloco:blocos)) p | not (temChave p)&& (fst (posicao p)>=11.5 && fst (posicao p) <=18) && (snd (posicao p)>=0 && snd (posicao p)<=4) = p {posicao = (if fst (posicao p)<=13 then fst (posicao p)-0.3 else fst (posicao p)+0.5 , snd (posicao p))} 
+                                      | (fst (posicao p) >= fromIntegral (length bloco)) = p {posicao = (fromIntegral (length bloco)-1, snd (posicao p))} 
                                       | (fst (posicao p) <= 0) = p {posicao = (0.5, snd (posicao p))} 
                                       | otherwise = p 
                                        
