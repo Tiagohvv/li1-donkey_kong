@@ -14,13 +14,13 @@ import GHC.OldList (elemIndices, elemIndex)
 
 
 valida :: Jogo -> Bool
-valida (Jogo mapa inimigos colecionaveis jogador) | validachao mapa == False = False
-                                                  | ressalta jogador == True || validaressalta inimigos == False = False 
-                                                  | validaposicaoJogador jogador inimigos == False = False
-                                                  | containimigos inimigos < 2 = False 
-                                                  | validavidas inimigos == False = False
-                                                  | validaesc mapa == False = False
-                                                  | otherwise = True
+valida (Jogo mapa inimigos colecionaveis jogador _) | validachao mapa == False = False
+                                                    | ressalta jogador == True || validaressalta inimigos == False = False 
+                                                    | validaposicaoJogador jogador inimigos == False = False
+                                                    | containimigos inimigos < 2 = False 
+                                                    | validavidas inimigos == False = False
+                                                    | validaesc mapa == False = False
+                                                    | otherwise = True
 
 
 

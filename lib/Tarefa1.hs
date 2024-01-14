@@ -16,29 +16,19 @@ import GHC.Float (double2Float)
 
 
 colisoesParede :: Mapa -> Personagem -> Bool
-colisoesParede (Mapa (_, _) _ mapaTeste) per2 | fora (per2) == True = True
-                                              | colisao (criaHitbox per2) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) == True = True
+colisoesParede (Mapa (_, _) _ mapaTeste) p    | (fst (posicao p) >= fromIntegral (length (head mapaTeste))) = True 
+                                              | (fst (posicao p) <= 0) = True
+                                              | colisao (criaHitbox p) (espacoBloco (posicaoBlocos (0.0,0.0) (mapaTeste))) == True = True
                                               | otherwise = False
 
 
 
 
 colisoesPersonagens :: Personagem -> Personagem -> Bool
-colisoesPersonagens per1 per2 | sobreposicao (criaHitbox per1) (criaHitbox per2) = True 
+colisoesPersonagens per1 per2 | sobreposicao (criaHitbox per1) (criaHitbox per2) == True = True
                               | otherwise = False
 
-
-{-| Função que dada a posição do jogador devolve True se este estiver fora do mapa e False se o jogador estiver dentro do mapa
-
-== Exemplos
-fora (44.0,22.0)
->>> True
--}
-
-fora :: Personagem -> Bool
-fora x | fst (posicao x) >= 42 || fst (posicao x) <= 0 || snd (posicao x) <= 0 || snd (posicao x) >= 18 = True
-       | otherwise = False
-                                            
+                                           
 
 {-| Função que testa se duas Hitboxs estão a colidir.
 
@@ -47,12 +37,6 @@ fora x | fst (posicao x) >= 42 || fst (posicao x) <= 0 || snd (posicao x) <= 0 |
 >>> sobreposicao ((1,1),(2,2)) ((1.5,1.5),(3.5,3.5))
 True
 -}
-
--- Tiago
---sobreposicao :: Hitbox -> Hitbox -> Bool
---sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
---                                                      | otherwise = False                 
-
 sobreposicao :: Hitbox -> Hitbox -> Bool
 sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | ((x3>= x1 && x3<=x2)&& ((y3>=y1 && y3<=y2) || (y4>=y1 && y4<=y2))) || ((y1==y3 &&y2==y4)&& ((x3>=x1 && x3<=x2) || (x4>=x1 && x4<=x2))) || ((x3==x1 && x4==x2)&&((y3>=y1 && y3<=y2)|| (y4>=y1 && y4<=y2))) || (x3==x2 && ((y3>=y1 && y3<=y2)|| (y4<=y2 &&y4>=y1))) || (x4==x1 && ((y4<=y2 && y4>=y1)|| (y3<=y2 && y3>=y1))) || ((x3>=x1 && x3<=x2)&&(y4<=y2 && y4>=y1)) || ((x1>=x3 && x1<=x4)&&(y2<=y4 && y2>=y3)) = True
                                                        | otherwise = False                                                                                   
@@ -73,8 +57,6 @@ intersecao((p1,p2), (p3,p4)) ((p5,p6),(p7,p8)) = pointInBox (double2Float p5,dou
 >>>colisao ((1,1),(2,2))  [((1.5,1.5),(3.5,3.5)), ((1.5,1.5),(3.5,3.5))]
 True
 -}
-
-
 colisao :: Hitbox -> [Hitbox] -> Bool
 colisao _ [] = False
 colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) = True
@@ -116,7 +98,6 @@ posicaoBlocop (x, y) (h:t)
 
 [((0.0,0.0),(10.0,10.0)),((10.0,10.0),(20.0,20.0)),((10.0,0.0),(20.0,10.0)),((20.0,10.0),(30.0,20.0))]
 -}
-
 espacoBloco :: [Posicao] -> [Hitbox]
 espacoBloco [] = []
 espacoBloco ((x,y):t) = ((x,y), (x + 10,y + 10)) : espacoBloco t 
@@ -130,9 +111,6 @@ espacoBloco ((x,y):t) = ((x,y), (x + 10,y + 10)) : espacoBloco t
 ((3.0,4.0),(13.0,24.0))
 
 -}
---criaHitbox :: Posicao -> Personagem -> Hitbox
---criaHitbox (x,y) personagem = ((x,y), (x + (fst (tamanho personagem ))), (y + (snd (tamanho personagem ))))
-
 criaHitbox :: Personagem -> Hitbox
 criaHitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
 
@@ -171,19 +149,6 @@ blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length bloco
                       
                                                  
                     
-
- -- Não é necessário para o jogo funcionar                                                
-
---colisoesPersonagens :: Personagem -> [Personagem] -> Bool
---colisoesPersonagens per2 [per,per3] | colisao (criaHitbox per2) [(criaHitbox (per)), (criaHitbox (per3))] = True 
- --                                   | otherwise = False
-
---colisoesParede :: Mapa -> Personagem -> Bool
---colisoesParede (m) Personagem {posicao = (x,y)} | x == 100 || y == 100 = True
- --                                              | sobreposicao (posicao personagem) (espacoBloco (0,0) (m)) = True
- --                                              | otherwise = False                    
-
-
 
 
 

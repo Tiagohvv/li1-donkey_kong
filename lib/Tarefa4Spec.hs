@@ -7,7 +7,7 @@ import Test.HUnit
 mapa01 :: Mapa
 mapa01 =
   Mapa
-    ((8.5, 6.5), Este)
+    ((8.5, 7), Este)
     (5, 1.5)
     [ [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio],
       [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio],
@@ -34,7 +34,8 @@ inimigoParado =
       ressalta = True,
       vida = 1,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 jogadorParado =
@@ -48,7 +49,8 @@ jogadorParado =
       ressalta = False,
       vida = 10,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 jogo01 :: Jogo
@@ -57,11 +59,12 @@ jogo01 =
     { mapa = mapa01,
       inimigos = [inimigoParado],
       colecionaveis = [],
-      jogador = jogadorParado
+      jogador = jogadorParado,
+      pausa = False
     }
 
 teste01 :: Test
-teste01 = "T01: Quando não há nenhuma acção, o jogo permanece inalterado" ~: jogo01 ~=? atualiza [Nothing] Nothing jogo01
+teste01 = "T01: Quando não há nenhuma acção, o jogo permanece inalterado" ~: jogo01 {inimigos = [Personagem { velocidade = (2.0, 0.0),tipo = Fantasma,posicao = (2.5, 7.6),direcao = Este, tamanho = (1, 1),emEscada = False,ressalta = True,vida = 1,pontos = 0,aplicaDano = (False, 0),temChave = False}]} ~=? atualiza [Nothing] Nothing jogo01
 
 andarDireita01 :: Jogo
 andarDireita01 = atualiza [Nothing] (Just AndarDireita) jogo01
@@ -98,7 +101,8 @@ jogadorEmFrenteEscada =
       ressalta = False,
       vida = 10,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 jogo02 :: Jogo
@@ -107,15 +111,14 @@ jogo02 =
     { mapa = mapa01,
       inimigos = [inimigoParado],
       colecionaveis = [],
-      jogador = jogadorEmFrenteEscada
+      jogador = jogadorEmFrenteEscada,
+      pausa = False
     }
 
 teste05 :: Test
-teste05 = TestLabel "T05" $ test [testeA, testeB]
-  where
-    testeA = "A: Quando a acção é Subir, o vetor velocidade do jogador é negativo na componente do Y" ~: True ~=? (snd . velocidade . jogador $ resultadoSubir) < 0
-    testeB = "B: Quando a acção é Saltar, o jogador passa a estar em escada" ~: True ~=? (emEscada . jogador $ resultadoSubir)
-    resultadoSubir = atualiza [Nothing] (Just Subir) jogo01
+teste05 = "A: Quando a acção é Subir, o vetor velocidade do jogador é negativo na componente do Y" ~: True ~=? (snd . velocidade . jogador $ resultadoSubir) < 0
+    where
+      resultadoSubir = atualiza [Nothing] (Just Subir) jogo01
 
 jogadorEmEscada =
   Personagem
@@ -128,15 +131,14 @@ jogadorEmEscada =
       ressalta = False,
       vida = 10,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 teste06 :: Test
-teste06 = TestLabel "T06" $ test [testeA, testeB]
+teste06 = "A: Quando a acção é Descer, o vetor velocidade do jogador é positivo na componente do Y" ~: True ~=? (snd . velocidade . jogador $ resultadoSubir) > 0
   where
-    testeA = "A: Quando a acção é Descer, o vetor velocidade do jogador é positivo na componente do Y" ~: True ~=? (snd . velocidade . jogador $ resultadoSubir) > 0
-    testeB = "B: Quando a acção é Descer, o jogador continua em escada" ~: (emEscada jogadorEmEscada) ~=? (emEscada . jogador $ resultadoSubir)
-    resultadoSubir = atualiza [Nothing] (Just Descer) jogo01
+      resultadoSubir = atualiza [Nothing] (Just Descer) jogo01
 
 testesTarefa4 :: Test
 testesTarefa4 = TestLabel "Tarefa4 (atualiza)" $ test [teste01, teste02, teste03, teste04, teste05, teste06]

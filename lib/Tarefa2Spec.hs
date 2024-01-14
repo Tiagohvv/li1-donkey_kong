@@ -43,7 +43,8 @@ inimigoModelo =
       ressalta = True,
       vida = 1,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
     
     
@@ -58,7 +59,8 @@ inimigoModelo1 =
       ressalta = True,
       vida = 1,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 jogadorParado =
@@ -72,7 +74,8 @@ jogadorParado =
       ressalta = False,
       vida = 10,
       pontos = 0,
-      aplicaDano = (False, 0)
+      aplicaDano = (False, 0),
+      temChave = False
     }
 
 jogo01 :: Jogo
@@ -81,7 +84,8 @@ jogo01 =
     { mapa = mapa01,
       inimigos = [inimigoModelo, inimigoModelo1],
       colecionaveis = [],
-      jogador = jogadorParado
+      jogador = jogadorParado,
+      pausa = False
     }
 
 teste01 :: Test
@@ -116,7 +120,7 @@ teste03 = TestLabel "T03" $ test [testeA, testeB]
     testeB = "B: Jogador não pode ressaltar" ~: False ~=? valida jogo01 {jogador = jogadorParado {ressalta = True}}
 
 teste04 :: Test
-teste04 = "T04: Se na posição inicial um inimigo colidir com a posição inicial do jogador, o jogo é inválido" ~: False ~=? valida jogo01 {inimigos = [inimigoModelo {posicao = (8.0, 6.0)}, inimigoModelo]}
+teste04 = "T04: Se na posição inicial um inimigo colidir com a posição inicial do jogador, o jogo é inválido" ~: False ~=? valida jogo01 {inimigos = [inimigoModelo {posicao = (8.5, 6.5)}, inimigoModelo]}
 
 teste05 :: Test
 teste05 = "T05: Para o jogo ser válido precisa de ter pelo menos dois inimigos" ~: False ~=? valida jogo01 {inimigos = [inimigoModelo]}

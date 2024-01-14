@@ -36,68 +36,12 @@ matrizJogoExp =[
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]]
 
 
-
-player2 :: Personagem
-player2 = Personagem {velocidade = (0,0),
-                     tipo = Jogador,
-                     posicao = (1,1),
-                     direcao = Este,
-                     tamanho = (2,2),
-                     emEscada = False,
-                     ressalta = False,
-                     vida = 3,
-                     pontos = 0,
-                     aplicaDano = (True,0.0)
-                     }
-
-
-
-player3 :: Personagem
-player3 = Personagem {velocidade = (0,0),
-                     tipo = Jogador,
-                     posicao = (1.5,1),
-                     direcao = Este,
-                     tamanho = (1,1),
-                     emEscada = False,
-                     ressalta = False,
-                     vida = 3,
-                     pontos = 0,
-                     aplicaDano = (True,0.0)
-                     }
-
-
-
-per = Personagem {
-   posicao = (5,5),
-   tamanho = (10,20),
-   ressalta = True,
-   tipo = Fantasma,
-   vida = 1
-}
-
-
-
-per2 = Personagem {
-   posicao = (10,2),
-   tamanho = (3,3),
-   ressalta = False,
-   tipo = Jogador
-}
-
-
-
-per3 = Personagem {
-   posicao = (4,4),
-   tamanho = (3,3),
-   ressalta = True,
-   tipo = Fantasma,
-   vida = 1
-}
-
 jogoexp :: Jogo 
-jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa}  
+jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa} False 
                                                where (Mapa (pmapa,dmapa) _ _) = mapaTeste
   
+
+
 
 colec :: [(Colecionavel, Posicao)]
 colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,12)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
@@ -208,7 +152,6 @@ gethitboxcol l = ((fst l - fst tamanho/2, snd l - snd tamanho/2) ,(fst l + fst t
 ((1.5,0.5),(2.5,1.5))
 
 -}
-
 getdamagehitbox :: Personagem -> Hitbox
 getdamagehitbox p 
   | direcao p == Este = getdamagehitboxAuxEste (gethitbox p)
@@ -361,69 +304,6 @@ verificaPlataAcima a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (sn
 
 
 
-
-{-}
-
-
-*/aplicaGravidade :: Mapa -> Personagem -> Personagem
-aplicaGravidade mapa personagem =
-  if estaSobrePlataforma mapa personagem
-    then personagem -- Não aplicar gravidade se estiver sobre uma plataforma
-    else aplicarGravidade personagemvalidachao [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]
-estaSobrePlataforma (Mapa _ _ blocos) personagem =
-  let posicaoPersonagem = posicao personagem
-      blocoAtual = blocoNaPosicao mapa posicaoPersonagem
-  in blocoAtual == Just Plataforma
-
--- Encontra o bloco na posição dada no mapa
-blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
-blocoNaPosicao (Mapa _ _ blocos) (x, y) =
-  let linha = round y
-      coluna = round x
-  in if linha >= 0 && linha < length blocos && coluna >= 0 && coluna < length (head blocos)
-        then Just (blocos !! linha !! coluna)
-        else Nothing
-
--- Aplica o efeito de gravidade ao personagem
-aplicarGravidade :: Personagem -> Personagem
-aplicarGravidade personagem =
-  let (vx, vy) = velocidade personagem
-      novaVelocidade = (vx, vy - gravidade)
-      novaPosicao = atualizarPosicao personagem novaVelocidade
-  in personagem { velocidade = novaVelocidade, posicao = novaPosicao }
-
-
----Atualiza a posição do personagem com base na velocidade
-atualizarPosicao :: Personagem -> Velocidade -> Posicao
-atualizarPosicao personagem (vx, vy) =
-  let (x, y) = posicao personagem
-  in (x + vx, y + vy)
-  
-
-aplicaGravidade :: Mapa -> Personagem -> Personagem 
-aplicaGravidade mp p | blocoNaPosicao  mp p == Just-- = novaPosicao p
-                     | otherwise = p    
-
-novaPosicao :: Posicao -> Posicao 
-novaPosicao (x,y) = undefined
-
-
-estaemPlataforma :: Mapa -> Personagem -> Bool
-estaemPlataforma m@(Mapa _ _ blocos) p = blocoatual == Just Plataforma 
-          where posicaoPersonagem = posicao p 
-                blocoatual = blocoNaPosicao m posicaoPersonagem
-
-
-blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
-blocoNaPosicao (Mapa _ _ blocos) (x, y) = 
-    if linha >= 0 && linha < length blocos && coluna >= 0 && coluna < length (head blocos)
-    then Just (blocos !! linha !! coluna)
-                    tipo = Fantasma, 
-    else Nothing
-    where linha = round y
-          coluna = round x 
--}
-
 {-| Função que dado um jogo aplica a função perdevidainimigoEmjogo aos inimigos-}
 -- Fantasma perde vida ao ser martelado 
 perdevidainimigoEMjogo :: Jogo -> Jogo 
@@ -455,22 +335,11 @@ perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (mapa j) (jogador j) (i
 Personagem {velocidade = (0.0,0.0), tipo = Jogador, posicao = (1.0,1.0), direcao = Este, tamanho = (1.0,1.0), emEscada = False, ressalta = False, vida = 1, pontos = 0, aplicaDano = (True,0.0)}
 
 -}
-
-
 perdevidaJogador :: Mapa -> Personagem -> [Personagem] -> Personagem 
 perdevidaJogador _ j [] = j                          
 perdevidaJogador a@(Mapa (p1,p2) _ _) j (ini:inis) | colisoesPersonagens j ini = perdevidaJogador a (j {vida = (vida j)-1, posicao =p1, direcao = p2}) inis 
                                                  | otherwise = perdevidaJogador a j inis 
 
-
-{-
-jogadorMorreEmJogo :: Jogo -> Jogo 
-jogadorMorreEmJogo j = j {jogador = jogadorMorre (mapa j) (jogador j)}
-
-jogadorMorre :: Mapa -> Personagem -> Personagem
-jogadorMorre a@(Mapa (p1,p2) _ l) p | vida p == 0 = p{posicao = p1, direcao = p2} 
-                                    | otherwise = p 
--}
 {-| Função que dado um jogo aplica a função xaucolec e armaEpontosJogador-}
 -- arma o jogador se for martelo e aumenta pontos se for moeda. Desaparecem se forem recolhidos 
 armaEpontosJogadorEMjogo :: Tempo -> Jogo -> Jogo 
@@ -496,7 +365,6 @@ xaucolec j ((col,pos):cols) | (col== Porta) && (temChave j) && sobreposicao (get
 Personagem {velocidade = (0.0,0.0), tipo = Fantasma, posicao = (14.0,8.0), direcao = Oeste, tamanho = (1.0,1.0), emEscada = False, ressalta = True, vida = 1, pontos = 0, aplicaDano = (False,0.0)}
 
 -}
-
 armaEpontosJogador :: Tempo -> Personagem -> [(Colecionavel, Posicao)] -> Personagem 
 armaEpontosJogador t j [] = j{aplicaDano = (snd (aplicaDano j) >0,if snd (aplicaDano j )<= 0 then 0 else snd (aplicaDano j) -t)} 
 armaEpontosJogador t j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador t (j {aplicaDano = (True, 10)}) cols
@@ -530,26 +398,34 @@ False
 Mapa ((1.0,1.0),Oeste) (0.5,2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]
 
 -}
---pisaalcapao :: Posicao -> Mapa -> Bool 
---pisaalcapao (x, y) a@(Mapa _ _ blocos) = blocoNaPosicao a ( x, y+1) == Just Alcapao 
+
 
 pisaalcapaoJogador :: Personagem -> Posicao -> Mapa -> Mapa 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 []) = a 
 pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 blocos)  = Mapa (p1, d) p2 (pisaalcapao2 p (x,y) blocos)               
-{-
->>>>>>> 6ee4c18e37efd26400340972edcfd96f7059d1be
-trocarBlocoNaPosicao :: Bloco -> Bloco -> Posicao -> [[Bloco]] -> [[Bloco]]
-trocarBlocoNaPosicao _ _ _ [] = []  
-trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
-    take (round linha) matriz ++
-    [trocarLinhaNaPosicao antigo novo coluna (matriz !! round linha)] ++
-    drop ( round linha + 1) matriz
-  where
-    trocarLinhaNaPosicao _ _ _ [] = []  
-    trocarLinhaNaPosicao antigo novo coluna (b:bs)
-      | coluna == 0 = novo : bs  
-      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs
+
+
+
+
+
+{-| Função que recebe uma personagem e uam posiçao e a matriz inteira e aplica a pisaalcapao a todas as linhas da matriz
+== Exemplos
+
+>>>
 -}
+pisaalcapao2 :: Personagem -> Posicao -> [[Bloco]] -> [[Bloco]]
+pisaalcapao2 _ _ [] = []
+pisaalcapao2 p (x,y) (bloco:blocos) = pisaalcapao p (x,y) bloco : pisaalcapao2 p (x,y+1) blocos 
+
+{-| Função que recebe uma personagem e uma posição e uma linha da matriz de blocos e retorna essa linha com os alçapoes substituidso por vazio caso o jogador esteja em colisão com a mesma 
+== Exemplos
+
+>>>
+-}
+pisaalcapao :: Personagem -> Posicao -> [Bloco] -> [Bloco] 
+pisaalcapao _ _ [] = []
+pisaalcapao p (x,y) (b1:b) | tipo p == Jogador && b1 == Alcapao && sobreposicao (gethitboxcol (x,y)) (gethitbox p) = (Vazio: (pisaalcapao p (x+1,y) b))
+                                     | otherwise = (b1:pisaalcapao p (x+1,y) b)
 
 {-| Função que dada uma velocidade, um tempo e uma posicao dá a posição atualizada conforme os parámetros anteriores
 == Exemplos
@@ -558,6 +434,9 @@ trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
 (20.0,25.0)
 
 -}
+-- Atualiza as posicoes com a velocidade 
+posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
+posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
 
 
 {-| Função que dado um tempo e uma personagem aplica a função posicaoatualizada a posição do jogador utilizando os parámetros dados 
@@ -568,29 +447,18 @@ Personagem {velocidade = (0.0,0.0), tipo = Fantasma, posicao = (14.0,8.0), direc
 
 -}
 
-pisaalcapao2 :: Personagem -> Posicao -> [[Bloco]] -> [[Bloco]]
-pisaalcapao2 _ _ [] = []
-pisaalcapao2 p (x,y) (bloco:blocos) = pisaalcapao p (x,y) bloco : pisaalcapao2 p (x,y+1) blocos 
-
-pisaalcapao :: Personagem -> Posicao -> [Bloco] -> [Bloco] 
-pisaalcapao _ _ [] = []
-pisaalcapao p (x,y) (b1:b) | tipo p == Jogador && b1 == Alcapao && sobreposicao (gethitboxcol (x,y)) (gethitbox p) = (Vazio: (pisaalcapao p (x+1,y) b))
-                                     | otherwise = (b1:pisaalcapao p (x+1,y) b)
-
-hitboxAlcapao :: [Posicao] -> [Hitbox] 
-hitboxAlcapao [] = [] 
-hitboxAlcapao blocos = gethitboxcol (head (blocos)) : hitboxAlcapao (tail blocos) 
-                           
-
-
-
-
--- Atualiza as posicoes com a velocidade 
-posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
-posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
-
 posicaoatualizadaPer :: Tempo -> Mapa -> Personagem -> Personagem 
 posicaoatualizadaPer t a@(Mapa _ _ blocos) p = p {posicao= posicaoatualizada (velocidade p) t (posicao p) } 
+
+
+
+{-| Função que dado um tempo e uma personagem aplica a função posicaoatualizada a posição do jogador utilizando os parámetros dados 
+== Exemplos
+
+>>>posicaoatualizadaPer (10.0) (Personagem {velocidade = (0,0),tipo = Fantasma, emEscada = False, vida = 1, pontos = 0, ressalta = True, posicao = (14,8), tamanho = (1,1),  aplicaDano = (False, 0), direcao = Oeste})  
+Personagem {velocidade = (0.0,0.0), tipo = Fantasma, posicao = (14.0,8.0), direcao = Oeste, tamanho = (1.0,1.0), emEscada = False, ressalta = True, vida = 1, pontos = 0, aplicaDano = (False,0.0)}
+
+-}
 
 posicaoatualizadaIni :: Tempo -> Mapa -> [Personagem] -> [Personagem] 
 posicaoatualizadaIni _ _ [] = []
@@ -639,6 +507,7 @@ tiraposicoes (Mapa (a,b) c []) = []
 tiraposicoes (Mapa (a,b) c (bloco:blocos)) = fromIntegral (length bloco) : tiraposicoes (Mapa (a,b) c blocos) 
 
 movimenta :: Semente -> Tempo -> Jogo -> Jogo
-movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
-
+movimenta x t jogoexp | pausa jogoexp = jogoexp  
+                      | otherwise = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
+                      
 
