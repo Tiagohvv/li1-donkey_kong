@@ -9,6 +9,9 @@ Módulo para a realização da Tarefa 1 de LI1 em 2023/24.
 module Tarefa1 where
 import LI12324
 import Data.Fixed (E0)
+import GHC.OldList (elemIndices, elemIndex)
+import Graphics.Gloss.Data.Point (pointInBox)
+import GHC.Float (double2Float)
 
 
 colisoesParede :: [[Bloco]] -> Personagem -> Bool
@@ -55,7 +58,7 @@ True
 -- Tiago
 --sobreposicao :: Hitbox -> Hitbox -> Bool
 --sobreposicao ((p1, p2), (p3, p4)) ((p5, p6), (p7, p8)) | ((p5 >= p1 && p5 <= p3) || (p7 >= p1 && p7 <= p3)) && (((p8 >= p4 && p8 <= p2) || (p6 <= p2 && p6 >= p4)) || ((p6 > p2) && (p8 < p4))) = True
---                                                       | otherwise = False
+ --                                                      | otherwise = False
 
 --sobreposicao :: Hitbox -> Hitbox -> Bool
 --sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | (x3>= x1 && x3<=x2 || x4>=x1 && x4<=x2) && ( y3>=y1 && y3<=y2|| y4>=y1 && y4<=y2)  = True
@@ -70,6 +73,14 @@ sobreposicao ((x1, y1), (x2, y2)) ((x3, y3), (x4, y4)) | ((x3>= x1 && x3<=x2)&& 
  --  | (p1 <= p5 && p5 <= p3 || p1 <= p7 && p7 <= p3) && (p2 <= p6 && p6 <= p4 || p2 <= p8 && p8 <= p4) = True
  --  |otherwise = False
 
+{-
+sobreposicao :: Hitbox -> Hitbox -> Bool
+sobreposicao h1 h2 = intersecao h1 h2 || intersecao h2 h1
+
+intersecao:: Hitbox -> Hitbox -> Bool
+intersecao((p1,p2), (p3,p4)) ((p5,p6),(p7,p8)) = pointInBox (double2Float p5,double2Float p6) (double2Float p1,double2Float p2) (double2Float p3,double2Float p4) || pointInBox (double2Float p7,double2Float p8) (double2Float p1,double2Float p2) (double2Float p3,double2Float p4) || pointInBox (double2Float p5,double2Float p8) (double2Float p1,double2Float p2) (double2Float p3,double2Float p4) || pointInBox (double2Float p7,double2Float p6) (double2Float p1,double2Float p2) (double2Float p3,double2Float p4) 
+-}
+
 {-| Função que testa se duas Hitboxs estão a colidir. 
 
 == Exemplos
@@ -80,8 +91,8 @@ True
 
 
 colisao :: Hitbox -> [Hitbox] -> Bool
-colisao _ [] = True
-colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) == False = False
+colisao _ [] = False
+colisao ((p1,p2),(p3,p4)) (((p5,p6),(p7,p8)):t) | sobreposicao ((p1,p2),(p3,p4)) ((p5,p6),(p7,p8)) = True
                                                 | otherwise = colisao ((p1,p2),(p3,p4)) t
 
 {-| Função que dada uma posição inicial e uma lista de listas de Blocos(cada lista de Blocos corresponde a uma linha ) dá a posição de todos os Blocos.
@@ -179,7 +190,10 @@ posicaoBlocoss (bloco:resto)
     | bloco == Plataforma || bloco == Alcapao = (0, 0) : map (\(linha, coluna) -> (linha + 1, coluna)) (posicaoBlocoss resto)
     | otherwise = posicaoBlocoss resto
 
-
+posicaoBlocos1 :: Bloco -> [[Bloco]] -> [Posicao] 
+posicaoBlocos1 bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
+                                   colunas <- [0 .. (length matriz)-1]  
+                                 , linhas  <- elemIndices bloco (matriz !! colunas)]  
 
 
 blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco

@@ -12,25 +12,34 @@ import LI12324
 import Data.Bool (Bool)
 import Tarefa1
 import Tarefa2
-import Tarefa3 (verificaPlataforma)
+import Tarefa3 
+
 
 
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
-atualiza a acao jogo | acao == Just Subir && estaEmEscada (mapa jogo) (jogador jogo) = jogo {jogador = velocidadesobe (jogador jogo) }
-                     | acao == Just Descer && estaEmEscada (mapa jogo) (jogador jogo)  = jogo {jogador = velocidadedesce (jogador jogo) }
-                     | acao == Just AndarDireita && not (estaEmEscada (mapa jogo) (jogador jogo)) = jogo {jogador = velocidadeDireita (jogador jogo) }
-                     | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined 
-                     | acao == Just AndarEsquerda && not (estaEmEscada (mapa jogo) (jogador jogo)) = jogo {jogador = velocidadeEsquerda (jogador jogo) }
-                     | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined   
-                     | acao == Just Saltar && verificaPlataforma (mapa jogo) (jogador jogo) && emEscada (jogador jogo) == False = jogo {jogador = saltar (jogador jogo)}     
-                     | acao == Just Parar = jogo {jogador = parar (jogador jogo)}                   
-                     | otherwise = jogo 
-
-
-estaEmEscada :: Mapa -> Personagem -> Bool 
-estaEmEscada a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Escada = True
-                                   | otherwise = False  
+atualiza (h:t) acao jogo | acao == Just Subir && estaEmEscada (mapa jogo) (jogador jogo) = jogo {jogador = velocidadesobe (jogador jogo) }
+                         | acao == Just Descer && ((estaEmEscada (mapa jogo) (jogador jogo) && not (verificaPlataforma (mapa jogo) (jogador jogo))) || estaEscadaEPlat (mapa jogo) (jogador jogo) || not (verificaPlataforma (mapa jogo) (jogador jogo))) = jogo {jogador = velocidadedesce (jogador jogo) }
+                         | acao == Just AndarDireita && (not (estaEmEscada (mapa jogo) (jogador jogo)) || (estaEmEscada (mapa jogo) (jogador jogo) && verificaPlataforma (mapa jogo) (jogador jogo))) = jogo {jogador = velocidadeDireita (jogador jogo) }
+                         | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined 
+                         | acao == Just AndarEsquerda && (not (estaEmEscada (mapa jogo) (jogador jogo)) || (estaEmEscada (mapa jogo) (jogador jogo) && verificaPlataforma (mapa jogo) (jogador jogo))) = jogo {jogador = velocidadeEsquerda (jogador jogo) }
+                         | acao == Just AndarDireita && ressalta (jogador jogo) == True = undefined   
+                         | acao == Just Saltar && verificaPlataforma (mapa jogo) (jogador jogo) && emEscada (jogador jogo) == False = jogo {jogador = saltar (jogador jogo)}     
+                         | acao == Just Parar = jogo {jogador = parar (jogador jogo)}  
+                         | h == Nothing = jogo {inimigos = andarInimigos (inimigos jogo) }                 
+                         | otherwise = jogo 
+ 
                                          
+
+
+
+
+
+andarInimigos :: [Personagem] -> [Personagem]
+andarInimigos [] = []
+andarInimigos (h:t) | tipo h == Fantasma && direcao h == Este = (h {velocidade = (2, snd (velocidade h))}) : andarInimigos t
+                    | tipo h == Fantasma && direcao h == Oeste = (h {velocidade = (-2, snd (velocidade h))}) : andarInimigos t
+                    | otherwise = (h:t)
+
 
 parar :: Personagem -> Personagem 
 parar p = p{velocidade = (0,0)}
@@ -62,9 +71,10 @@ velocidadesobe p = p {velocidade = (0,-3)}
 velocidadedesce :: Personagem -> Personagem 
 velocidadedesce p = p {velocidade = (0,3)} 
 
-estaEscadaEPlat :: Mapa -> Personagem -> Bool 
-estaEscadaEPlat a@(Mapa _ _ blocos) p | verificaPlataforma a p  
 
+
+
+  
 
 {-
 atualiza :: [Maybe Acao] -> Maybe Acao -> Jogo -> Jogo
