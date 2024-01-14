@@ -12,7 +12,7 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((9,6), Oeste) (13,3) matrizJogoExp
+mapaTeste = Mapa ((4,10), Oeste) (13,3) matrizJogoExp
 
 matrizJogoExp :: [[Bloco]]
 matrizJogoExp =[
@@ -44,7 +44,7 @@ jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa} 
 
 
 colec :: [(Colecionavel, Posicao)]
-colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,12)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
+colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(28,12)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,7)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
@@ -475,12 +475,8 @@ pisaalcapao p (x,y) (b1:b) | tipo p == Jogador && b1 == Alcapao && sobreposicao 
 (20.0,25.0)
 
 -}
+
 -- Atualiza as posicoes com a velocidade {-| Função que recebe uma personagem e uma posição e uma linha da matriz de blocos e retorna essa linha com os alçapoes substituidso por vazio caso o jogador esteja em colisão com a mesma 
-
-== Exemplos
-
->>>
--}
 posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
 posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
 
@@ -517,32 +513,35 @@ posicaoatualizadaIni t a@(Mapa _ _ blocos) (i1:i2) = (i1 {posicao= posicaoatuali
 posicaoatualizadaPerEmjogo :: Tempo -> Jogo -> Jogo 
 posicaoatualizadaPerEmjogo t j = j {jogador = posicaoatualizadaPer t (mapa j) (jogador j) , inimigos = posicaoatualizadaIni t (mapa j) (inimigos j) } 
 
+{-| Função que aplica as as funções limitesIniTodos e limites aos inimigos e jogador respetivamente dentro do jogo -}
 limitesEmJogo :: Jogo -> Jogo 
 limitesEmJogo j = j {inimigos = limitesIniTodos (mapa j) (inimigos j), jogador = limites (mapa j) (jogador j) } 
 
+
+{-| Função que verifica se o inimigo está a chegar ao fim de uma plataforma do lado esquerdo -}
 verificaIniO :: Mapa -> Personagem -> Bool 
 verificaIniO a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))-1, (snd (posicao p))+1) == Just Vazio) = True 
                                    | otherwise = False 
 
+
+
+{-| Função que verifica se o inimigo está a chegar ao fim de uma plataforma do lado direito-} 
 verificaIniE :: Mapa -> Personagem -> Bool 
 verificaIniE a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))+1, (snd (posicao p))+1) == Just Vazio) = True 
                                    | otherwise = False 
-{-
-limitesIni :: Mapa -> [Personagem] -> [Personagem]
-limitesIni _ [] = []
-limitesIni a@(Mapa _ _ (bloco:blocos)) (h:t) | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } : limitesIni a t
-                                             | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este} : limitesIni a t 
-                                             | otherwise = (h:t)
--}
 
+
+{-| Função que verifica se um inimigo está a colidir com um canto do mapa ou se chegou ao fim de uma plataforma, nesse caso inverte a sua direção e velocidade -}
 limitesIni :: Mapa -> Personagem -> Personagem
 limitesIni a@(Mapa _ _ (bloco:blocos)) h | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } 
                                          | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este}  
                                          | otherwise = h
+
+{-| Função que aplica a função limitesIni a todos os inimigos da lista -}
 limitesIniTodos :: Mapa -> [Personagem] -> [Personagem]
 limitesIniTodos a@(Mapa _ _ (bloco:blocos)) l = map (limitesIni a) l 
 
-
+{-| Função que verifica se os uma personagem está a colidir com um canto do mapa. Usada para o jogador. É também usada para não deixar o jogador passar para a beira da estrela se não tiver a chave -}
 limites :: Mapa -> Personagem -> Personagem 
 limites a@(Mapa _ _ (bloco:blocos)) p | not (temChave p)&& (fst (posicao p)>=11.5 && fst (posicao p) <=18) && (snd (posicao p)>=0 && snd (posicao p)<=4) = p {posicao = (if fst (posicao p)<=13 then fst (posicao p)-0.3 else fst (posicao p)+0.5 , snd (posicao p))} 
                                       | (fst (posicao p) >= fromIntegral (length bloco)) = p {posicao = (fromIntegral (length bloco)-1, snd (posicao p))} 
@@ -550,9 +549,9 @@ limites a@(Mapa _ _ (bloco:blocos)) p | not (temChave p)&& (fst (posicao p)>=11.
                                       | otherwise = p 
                                        
 
-tiraposicoes :: Mapa -> [Double]
-tiraposicoes (Mapa (a,b) c []) = [] 
-tiraposicoes (Mapa (a,b) c (bloco:blocos)) = fromIntegral (length bloco) : tiraposicoes (Mapa (a,b) c blocos) 
+
+
+{-| Função que junta todas as outras funçoes que recebem e retornam um jogo -}
 
 movimenta :: Semente -> Tempo -> Jogo -> Jogo
 movimenta x t jogoexp | pausa jogoexp = jogoexp  

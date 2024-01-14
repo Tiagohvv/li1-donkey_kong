@@ -307,11 +307,5 @@ posicaovaz (x, y) (h:t)
 >>>posicaovaz (0.0,0.0) [Vazio,Escada,Plataforma,Alcapao]
 [(0.0,0.0)] 
 -}
-posicaoBlocos :: Bloco -> [[Bloco]] -> [Posicao] 
-posicaoBlocos bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
-                                   colunas <- [0 .. (length matriz)-1]  
-                                 , linhas  <- elemIndices bloco (matriz !! colunas)]  
-            
-
 
 

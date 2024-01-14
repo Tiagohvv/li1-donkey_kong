@@ -130,19 +130,21 @@ criaHitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tam
 
 
 
-
+{-| Função que dada uma lista de blocos retorna a lista das posições desses blocos -}
 posicaoBlocoss :: [Bloco] -> [Posicao]
 posicaoBlocoss [] = []
 posicaoBlocoss (bloco:resto)
     | bloco == Plataforma || bloco == Alcapao = (0, 0) : map (\(linha, coluna) -> (linha + 1, coluna)) (posicaoBlocoss resto)
     | otherwise = posicaoBlocoss resto
 
+
+{-| Função que dado um bloco e uma matriz de blocos retorna uma lista com as posições onde se encontram esses blocos -}
 posicaoBlocos1 :: Bloco -> [[Bloco]] -> [Posicao] 
 posicaoBlocos1 bloco matriz = [(fromIntegral linhas, fromIntegral colunas) | 
                                    colunas <- [0 .. (length matriz)-1]  
                                  , linhas  <- elemIndices bloco (matriz !! colunas)]  
 
-
+{-| Função que dado um mapa e uma posição retorna o bloco que se encontra nessa posição -}
 blocoNaPosicao :: Mapa -> Posicao -> Maybe Bloco
 blocoNaPosicao (Mapa _ _ blocos) (x, y) | round y >= 0 && round y < length blocos && round x < length (head blocos) && x >= 0 = Just (blocos !! round y !! round x)
                                         | otherwise = Nothing

@@ -37,10 +37,10 @@ frameRate :: Int
 frameRate = 50 
 
 
-desenhaOpcJogar :: Float -> Float -> Imagens -> Picture     -- 613 333
+desenhaOpcJogar :: Float -> Float -> Imagens -> Picture     
 desenhaOpcJogar x y imgs = translate x y (Scale 0.6 0.6 (getImagem Jogarimg imgs)) 
 
-desenhaOpcJogarSelec :: Float -> Float -> Imagens -> Picture     -- 613 333
+desenhaOpcJogarSelec :: Float -> Float -> Imagens -> Picture   
 desenhaOpcJogarSelec x y imgs = translate x y (Scale 1.5 1.5 (getImagem Jogarimg imgs))
 
 desenhaOpcSair :: Float -> Float -> Imagens -> Picture 
@@ -68,8 +68,6 @@ l = 1
 estadoexp :: Estado 
 estadoexp = Estado {jogo = jogoexp, modo = MenuInicial Jogar} 
 
---estadoGlossInicial :: Picture -> EstadoGloss 
---estadoGlossInicial a = (estadoinicial, z)
 
 
 
@@ -173,8 +171,7 @@ sacaJogador :: Jogo -> Personagem
 sacaJogador j = jogador j 
 
 
---desenhaEstadoGloss :: EstadoGloss -> Picture 
---desenhaEstadoGloss ((x,y),img) = Translate x y img 
+
 tempo :: Tempo 
 tempo = 1/50
 
