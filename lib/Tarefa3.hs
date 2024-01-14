@@ -12,27 +12,27 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((1,1), Oeste) (0.5, 2.5) matrizJogoExp
+mapaTeste = Mapa ((9,6), Oeste) (13,3) matrizJogoExp
 
 matrizJogoExp :: [[Bloco]]
 matrizJogoExp =[
-     [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+     [Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio]
     ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Plataforma, Alcapao, Alcapao, Alcapao, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio ,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Plataforma, Plataforma, Alcapao, Alcapao, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Escada, Plataforma,Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
-    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio,Vazio, Vazio,Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio,Vazio,Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio,Vazio, Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio,Vazio,Vazio,Vazio,Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Plataforma, Plataforma, Alcapao, Alcapao, Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio,Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma,Plataforma,Plataforma,Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio,Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Vazio, Vazio, Vazio, Vazio, Vazio,Plataforma, Plataforma, Alcapao, Alcapao, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma,Plataforma]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
+    ,[Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Escada, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio, Vazio]
     ,[Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma,Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma, Plataforma]]
 
 
@@ -95,11 +95,12 @@ per3 = Personagem {
 }
 
 jogoexp :: Jogo 
-jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa}
-                                               where (Mapa (pmapa,dmapa) _ _) = mapaTeste  
+jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa}  
+                                               where (Mapa (pmapa,dmapa) _ _) = mapaTeste
+  
 
 colec :: [(Colecionavel, Posicao)]
-colec = [(Moeda, (2,6)), (Martelo, (0,16))]
+colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,12)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
@@ -108,10 +109,11 @@ inimigo = [Personagem {velocidade = (0,0),
                     vida = 1, 
                     pontos = 0, 
                     ressalta = True, 
-                    posicao = (14,8), 
+                    posicao = (4,6), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Oeste}   
+                    direcao = Oeste,
+                    temChave = False }
                     ,
                     
           Personagem {velocidade = (0,0), 
@@ -120,25 +122,62 @@ inimigo = [Personagem {velocidade = (0,0),
                     vida = 1, 
                     pontos = 0, 
                     ressalta = True, 
-                    posicao = (6,12), 
+                    posicao = (11,8), 
                     tamanho = (1,1), 
                     aplicaDano = (False, 0), 
-                    direcao = Este}          
+                    direcao = Este,
+                    temChave = False}  
+                    ,
+          Personagem {velocidade = (0,0), 
+                    tipo = Fantasma, 
+                    emEscada = False, 
+                    vida = 1, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (16,16), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Oeste,
+                    temChave = False} 
+                    , 
+          Personagem {velocidade = (0,0), 
+                    tipo = Fantasma, 
+                    emEscada = False, 
+                    vida = 1, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (19,12), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Este,
+                    temChave = False} 
+                    , 
+          Personagem {velocidade = (0,0), 
+                    tipo = MacacoMalvado, 
+                    emEscada = False, 
+                    vida = 1, 
+                    pontos = 0, 
+                    ressalta = True, 
+                    posicao = (15,2.2), 
+                    tamanho = (1,1), 
+                    aplicaDano = (False, 0), 
+                    direcao = Oeste,
+                    temChave = False}           
                     ]
 
 
 player :: Personagem
 player = Personagem {velocidade = (0,0),
                      tipo = Jogador,
-                     posicao = (1,1),
+                     posicao = (5,2),
                      direcao = Este,
                      tamanho = (1,1), 
                      emEscada = False,
                      ressalta = False,
-                     vida = 1,
+                     vida = 3,
                      pontos = 0,
-                     aplicaDano = (False,0.0)
-                     }
+                     aplicaDano = (False,0.0),                    
+                     temChave = False}
 
 {-| Função que dada uma personagem cria a sua hitbox.
 
@@ -268,10 +307,9 @@ temGravidadeEMjogo t j = j {jogador = temGravidade t (jogador j) (mapa j) }
 Personagem {velocidade = (0.0,100.0), tipo = Jogador, posicao = (1.0,1.0), direcao = Este, tamanho = (1.0,1.0), emEscada = False, ressalta = False, vida = 1, pontos = 0, aplicaDano = (True,0.0)}
 
 -}
-temGravidade :: Tempo -> Personagem -> Mapa -> Personagem
-temGravidade t p a@(Mapa _ _ matriz) | blocoNaPosicao a (fst (posicao p), snd (posicao p) +0.3) /= Just Plataforma && not (estaEmEscada a p) = velocidadeGravidade t p 
-                                     | otherwise = p {velocidade = (fst(velocidade p),if (snd(velocidade p) < 0) || ((estaEmEscada a p)&& snd(velocidade p) > 0 ) then snd(velocidade p) else 0)} 
-
+temGravidade :: Tempo -> Personagem -> Mapa -> Personagem                    
+temGravidade t p a@(Mapa _ _ matriz) | (blocoNaPosicao a (fst (posicao p), snd (posicao p) +0.5) /= Just Plataforma && blocoNaPosicao a (fst (posicao p), snd (posicao p) +0.5) /= Just Alcapao) && not (estaEmEscada a p) = velocidadeGravidade t p 
+                                     | otherwise = p {velocidade = (fst(velocidade p),if (snd(velocidade p) < 0) || (estaEmPlataforma a p && (snd(velocidade p) > 0)) || (estaEscadaEPlat a p && snd(velocidade p) > 0) || (estaEmEscada a p && not (verificaPlataforma a p) && snd(velocidade p) > 0) || (verificaPlataAcima a p && verificaEscadaAbaixo a p && snd(velocidade p) < 0 )  then snd(velocidade p) else 0)} 
 
 {-| Função que dado um tempo e uma personagem devolve a personagem com a velocidade atualizada, fazendo isto ao acrescentar a segunda componente do par da velocidade a velocidade multiplicada pelo tempo
 == Exemplos
@@ -285,7 +323,7 @@ velocidadeGravidade t p = p {velocidade = (fst (velocidade p) , (snd (velocidade
 
 {-| Função que dado um mapa e uma personagem verifica se esta está em cima de uma plataforma-}
 verificaPlataforma :: Mapa -> Personagem -> Bool 
-verificaPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.7) == Just Plataforma = True 
+verificaPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.5) == Just Plataforma = True 
                                          | otherwise = False 
 
 {-| Função que dado um mapa e uma personagem verifica se o bloco em que esta se encontra corresponde a uma escada
@@ -295,13 +333,39 @@ verificaPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (sn
 True
 
 -}
+estaEmEscadaEmJogo :: Jogo -> Jogo 
+estaEmEscadaEmJogo j = j {jogador = poeEmEscada (mapa j) (jogador j)} 
+
 estaEmEscada :: Mapa -> Personagem -> Bool 
 estaEmEscada a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Escada = True
                                    | otherwise = False 
 
+poeEmEscada :: Mapa -> Personagem -> Personagem 
+poeEmEscada a@(Mapa _ _ blocos) p | estaEmEscada a p = p {emEscada = True}
+                                  | otherwise = p {emEscada = False}                                  
+
+estaEmPlataforma :: Mapa -> Personagem -> Bool 
+estaEmPlataforma a@(Mapa _ _ blocos) p | blocoNaPosicao a (posicao p) == Just Plataforma = True
+                                       | otherwise = False    
+
+estaEscadaEPlat :: Mapa -> Personagem -> Bool 
+estaEscadaEPlat a@(Mapa _ _ blocos) p | (verificaPlataforma a p) && (verificaEscadaAbaixo a p) = True 
+                                      | otherwise = False                                                                 
+verificaEscadaAbaixo :: Mapa -> Personagem -> Bool 
+verificaEscadaAbaixo a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1.7) == Just Escada) || (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+0.7)== Just Escada) = True 
+                                           | otherwise = False
+
+verificaPlataAcima :: Mapa -> Personagem -> Bool 
+verificaPlataAcima a@(Mapa _ _ blocos) p | blocoNaPosicao a (fst(posicao p), (snd (posicao p))-0.7) == Just Plataforma = True 
+                                         | otherwise = False                                          
+
+
+
+
 {-}
 
-aplicaGravidade :: Mapa -> Personagem -> Personagem
+
+*/aplicaGravidade :: Mapa -> Personagem -> Personagem
 aplicaGravidade mapa personagem =
   if estaSobrePlataforma mapa personagem
     then personagem -- Não aplicar gravidade se estiver sobre uma plataforma
@@ -381,7 +445,7 @@ perdevidainimigo (ini:inis) j  = if ((aplicaDano j == (True, snd (aplicaDano j))
  {-| Função que dado o jogo aplica a função perdevidaJogador ao jogador-}  
 --jogador perde vida ao ser tocado pelo fantasma          
 perdevidaJogadorEMjogo :: Jogo -> Jogo 
-perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (jogador j) (inimigos j) }
+perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (mapa j) (jogador j) (inimigos j) }
 
 
 {-| Função que recebe uma personagem no primeiro argumento e uma lista de personagens no segundo e caso haja colisão da primeira personagem com uma das da lista, a função devolve a primeira personagem com menos uma vida
@@ -391,15 +455,26 @@ perdevidaJogadorEMjogo j = j {jogador = perdevidaJogador (jogador j) (inimigos j
 Personagem {velocidade = (0.0,0.0), tipo = Jogador, posicao = (1.0,1.0), direcao = Este, tamanho = (1.0,1.0), emEscada = False, ressalta = False, vida = 1, pontos = 0, aplicaDano = (True,0.0)}
 
 -}
-perdevidaJogador :: Personagem -> [Personagem] -> Personagem 
-perdevidaJogador j [] = j                          
-perdevidaJogador j (ini:inis) | colisoesPersonagens j ini = perdevidaJogador (j {vida = (vida j)-1}) inis 
-                              | otherwise = perdevidaJogador j inis 
 
+
+perdevidaJogador :: Mapa -> Personagem -> [Personagem] -> Personagem 
+perdevidaJogador _ j [] = j                          
+perdevidaJogador a@(Mapa (p1,p2) _ _) j (ini:inis) | colisoesPersonagens j ini = perdevidaJogador a (j {vida = (vida j)-1, posicao =p1, direcao = p2}) inis 
+                                                 | otherwise = perdevidaJogador a j inis 
+
+
+{-
+jogadorMorreEmJogo :: Jogo -> Jogo 
+jogadorMorreEmJogo j = j {jogador = jogadorMorre (mapa j) (jogador j)}
+
+jogadorMorre :: Mapa -> Personagem -> Personagem
+jogadorMorre a@(Mapa (p1,p2) _ l) p | vida p == 0 = p{posicao = p1, direcao = p2} 
+                                    | otherwise = p 
+-}
 {-| Função que dado um jogo aplica a função xaucolec e armaEpontosJogador-}
 -- arma o jogador se for martelo e aumenta pontos se for moeda. Desaparecem se forem recolhidos 
-armaEpontosJogadorEMjogo :: Jogo -> Jogo 
-armaEpontosJogadorEMjogo j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador (jogador j) (colecionaveis j)}
+armaEpontosJogadorEMjogo :: Tempo -> Jogo -> Jogo 
+armaEpontosJogadorEMjogo t j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador t (jogador j) (colecionaveis j)}
 
 {-| Função que dada uma personagem e uma lista de colecionáveis verifica se alguma personagem colide com esses colecionáveis, e caso isso aconteça retira o colecionável do mapa
 == Exemplos
@@ -410,7 +485,8 @@ armaEpontosJogadorEMjogo j = j {colecionaveis = xaucolec (jogador j) (colecionav
 -}
 xaucolec :: Personagem -> [(Colecionavel, Posicao)] -> [(Colecionavel, Posicao)]
 xaucolec j [] = []
-xaucolec j ((col,pos):cols) | sobreposicao (gethitbox j) (gethitboxcol pos) = (col,xaupersonagem pos) : xaucolec j cols 
+xaucolec j ((col,pos):cols) | (col== Porta) && (temChave j) && sobreposicao (gethitbox j) (gethitboxcol pos) = (col,xaupersonagem pos) : xaucolec j cols 
+                            | (sobreposicao (gethitbox j) (gethitboxcol pos)) && (not (col==Porta))  = (col,xaupersonagem pos) : xaucolec j cols 
                             | otherwise = (col,pos) : xaucolec j cols       
 
 {-| Função que dada uma personagem e uma lista de colecionáveis verifica se alguma personagem colide com esses colecionáveis, e caso isso aconteça atualiza o jogador
@@ -420,17 +496,24 @@ xaucolec j ((col,pos):cols) | sobreposicao (gethitbox j) (gethitboxcol pos) = (c
 Personagem {velocidade = (0.0,0.0), tipo = Fantasma, posicao = (14.0,8.0), direcao = Oeste, tamanho = (1.0,1.0), emEscada = False, ressalta = True, vida = 1, pontos = 0, aplicaDano = (False,0.0)}
 
 -}
-armaEpontosJogador :: Personagem -> [(Colecionavel, Posicao)] -> Personagem 
-armaEpontosJogador j [] = j 
-armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador (j {aplicaDano = (True, 10)}) cols
-                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador (j {pontos = (pontos j) +1}) cols  
-                                | otherwise = armaEpontosJogador j cols 
+
+armaEpontosJogador :: Tempo -> Personagem -> [(Colecionavel, Posicao)] -> Personagem 
+armaEpontosJogador t j [] = j{aplicaDano = (snd (aplicaDano j) >0,if snd (aplicaDano j )<= 0 then 0 else snd (aplicaDano j) -t)} 
+armaEpontosJogador t j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador t (j {aplicaDano = (True, 10)}) cols
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador t (j {pontos = (pontos j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Vida) = armaEpontosJogador t (j {vida = (vida j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Chave) = armaEpontosJogador t (j {temChave = True}) cols
+                                | otherwise = armaEpontosJogador t j cols 
+
+
+
 
 {-| Função que dado um jogo aplica a função pisaalcapao ao mapa desse jogo-}
 
 -- Função que faz um alçapão desaparecer se o jogador o pisar  
 pisaalcapaoEMjogo :: Jogo -> Jogo 
-pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (mapa j) }
+pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (0,0) (mapa j)}                         
+
 
 {-| Função que dada uma poiscao e um mapa verifica se essa posição está por cima de um alçapao 
 == Exemplos
@@ -438,9 +521,7 @@ pisaalcapaoEMjogo j = j {mapa = pisaalcapaoJogador (jogador j) (mapa j) }
 >>>pisaalcapao (1,1) (Mapa ((1,1), Oeste) (0.5, 2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]])
 False
 
--}
-pisaalcapao :: Posicao -> Mapa -> Bool 
-pisaalcapao (x,y) a@(Mapa _ _ blocos) =  blocoNaPosicao a (x,y+1) == Just Alcapao 
+-} 
 
 {-| Função que dada uma personagem e um mapa retorna o mapa sem o alçapao se a personagem que está por cima do mesmo é do tipo jogador
 == Exemplos
@@ -449,29 +530,26 @@ pisaalcapao (x,y) a@(Mapa _ _ blocos) =  blocoNaPosicao a (x,y+1) == Just Alcapa
 Mapa ((1.0,1.0),Oeste) (0.5,2.5) [[Escada,Vazio,Vazio],[Escada,Vazio,Vazio],[Plataforma,Plataforma,Plataforma]]
 
 -}
-pisaalcapaoJogador :: Personagem -> Mapa -> Mapa
-pisaalcapaoJogador j m@(Mapa (p1,d) p2 []) = m
-pisaalcapaoJogador j a@(Mapa (p1,d) p2 (linha1:resto)) | tipo j == Jogador && pisaalcapao (posicao j) a  = Mapa (p1,d) p2 (trocarBlocoNaPosicao Alcapao Vazio (fst (posicao j), snd (posicao j) +1) (linha1:resto))
-                                                       | otherwise = a
+--pisaalcapao :: Posicao -> Mapa -> Bool 
+--pisaalcapao (x, y) a@(Mapa _ _ blocos) = blocoNaPosicao a ( x, y+1) == Just Alcapao 
 
-
-{-| Função que dada uma
-== Exemplos
-
->>>
-
--}
+pisaalcapaoJogador :: Personagem -> Posicao -> Mapa -> Mapa 
+pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 []) = a 
+pisaalcapaoJogador  p (x,y) a@(Mapa (p1, d) p2 blocos)  = Mapa (p1, d) p2 (pisaalcapao2 p (x,y) blocos)               
+{-
+>>>>>>> 6ee4c18e37efd26400340972edcfd96f7059d1be
 trocarBlocoNaPosicao :: Bloco -> Bloco -> Posicao -> [[Bloco]] -> [[Bloco]]
 trocarBlocoNaPosicao _ _ _ [] = []  
 trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
     take (round linha) matriz ++
     [trocarLinhaNaPosicao antigo novo coluna (matriz !! round linha)] ++
-    drop (round linha + 1) matriz
+    drop ( round linha + 1) matriz
   where
     trocarLinhaNaPosicao _ _ _ [] = []  
     trocarLinhaNaPosicao antigo novo coluna (b:bs)
       | coluna == 0 = novo : bs  
-      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs 
+      | otherwise = b : trocarLinhaNaPosicao antigo novo (coluna - 1) bs
+-}
 
 {-| Função que dada uma velocidade, um tempo e uma posicao dá a posição atualizada conforme os parámetros anteriores
 == Exemplos
@@ -480,8 +558,7 @@ trocarBlocoNaPosicao antigo novo (coluna, linha) matriz =
 (20.0,25.0)
 
 -}
-posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
-posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
+
 
 {-| Função que dado um tempo e uma personagem aplica a função posicaoatualizada a posição do jogador utilizando os parámetros dados 
 == Exemplos
@@ -490,16 +567,78 @@ posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))
 Personagem {velocidade = (0.0,0.0), tipo = Fantasma, posicao = (14.0,8.0), direcao = Oeste, tamanho = (1.0,1.0), emEscada = False, ressalta = True, vida = 1, pontos = 0, aplicaDano = (False,0.0)}
 
 -}
-posicaoatualizadaPer :: Tempo -> Personagem -> Personagem 
-posicaoatualizadaPer t p = p {posicao= posicaoatualizada (velocidade p) t (posicao p)}
+
+pisaalcapao2 :: Personagem -> Posicao -> [[Bloco]] -> [[Bloco]]
+pisaalcapao2 _ _ [] = []
+pisaalcapao2 p (x,y) (bloco:blocos) = pisaalcapao p (x,y) bloco : pisaalcapao2 p (x,y+1) blocos 
+
+pisaalcapao :: Personagem -> Posicao -> [Bloco] -> [Bloco] 
+pisaalcapao _ _ [] = []
+pisaalcapao p (x,y) (b1:b) | tipo p == Jogador && b1 == Alcapao && sobreposicao (gethitboxcol (x,y)) (gethitbox p) = (Vazio: (pisaalcapao p (x+1,y) b))
+                                     | otherwise = (b1:pisaalcapao p (x+1,y) b)
+
+hitboxAlcapao :: [Posicao] -> [Hitbox] 
+hitboxAlcapao [] = [] 
+hitboxAlcapao blocos = gethitboxcol (head (blocos)) : hitboxAlcapao (tail blocos) 
+                           
+
+
+
+
+-- Atualiza as posicoes com a velocidade 
+posicaoatualizada :: Velocidade -> Tempo -> Posicao -> Posicao 
+posicaoatualizada (v1,v2) t (x,y) = ((x+v1*t),(y+v2*t))  
+
+posicaoatualizadaPer :: Tempo -> Mapa -> Personagem -> Personagem 
+posicaoatualizadaPer t a@(Mapa _ _ blocos) p = p {posicao= posicaoatualizada (velocidade p) t (posicao p) } 
+
+posicaoatualizadaIni :: Tempo -> Mapa -> [Personagem] -> [Personagem] 
+posicaoatualizadaIni _ _ [] = []
+posicaoatualizadaIni t a@(Mapa _ _ blocos) (i1:i2) = (i1 {posicao= posicaoatualizada (velocidade i1) t (posicao i1)}) : posicaoatualizadaIni t a i2 
+
 
 {-| Função que dado um jogo aplica a função posicaoatualizadaPer a esse jogo-}
 posicaoatualizadaPerEmjogo :: Tempo -> Jogo -> Jogo 
-posicaoatualizadaPerEmjogo t j = j {jogador = posicaoatualizadaPer t (jogador j)} 
+posicaoatualizadaPerEmjogo t j = j {jogador = posicaoatualizadaPer t (mapa j) (jogador j) , inimigos = posicaoatualizadaIni t (mapa j) (inimigos j) } 
+
+limitesEmJogo :: Jogo -> Jogo 
+limitesEmJogo j = j {inimigos = limitesIniTodos (mapa j) (inimigos j), jogador = limites (mapa j) (jogador j) } 
+
+verificaIniO :: Mapa -> Personagem -> Bool 
+verificaIniO a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))-1, (snd (posicao p))+1) == Just Vazio) = True 
+                                   | otherwise = False 
+
+verificaIniE :: Mapa -> Personagem -> Bool 
+verificaIniE a@(Mapa _ _ blocos) p | (blocoNaPosicao a (fst(posicao p), (snd (posicao p))+1) == Just Plataforma) && (blocoNaPosicao a ((fst(posicao p))+1, (snd (posicao p))+1) == Just Vazio) = True 
+                                   | otherwise = False 
+{-
+limitesIni :: Mapa -> [Personagem] -> [Personagem]
+limitesIni _ [] = []
+limitesIni a@(Mapa _ _ (bloco:blocos)) (h:t) | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } : limitesIni a t
+                                             | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este} : limitesIni a t 
+                                             | otherwise = (h:t)
+-}
+
+limitesIni :: Mapa -> Personagem -> Personagem
+limitesIni a@(Mapa _ _ (bloco:blocos)) h | ressalta h == True && ((fst (posicao h) >= fromIntegral (length bloco)) || verificaIniE a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao = Oeste } 
+                                         | ressalta h == True && ((fst (posicao h) <= 0) || verificaIniO a h) = h {velocidade = (fst (velocidade h)* (-1),snd (velocidade h)), direcao= Este}  
+                                         | otherwise = h
+limitesIniTodos :: Mapa -> [Personagem] -> [Personagem]
+limitesIniTodos a@(Mapa _ _ (bloco:blocos)) l = map (limitesIni a) l 
 
 
+limites :: Mapa -> Personagem -> Personagem 
+limites a@(Mapa _ _ (bloco:blocos)) p | not (temChave p)&& (fst (posicao p)>=11.5 && fst (posicao p) <=18) && (snd (posicao p)>=0 && snd (posicao p)<=4) = p {posicao = (if fst (posicao p)<=13 then fst (posicao p)-0.3 else fst (posicao p)+0.5 , snd (posicao p))} 
+                                      | (fst (posicao p) >= fromIntegral (length bloco)) = p {posicao = (fromIntegral (length bloco)-1, snd (posicao p))} 
+                                      | (fst (posicao p) <= 0) = p {posicao = (0.5, snd (posicao p))} 
+                                      | otherwise = p 
+                                       
+
+tiraposicoes :: Mapa -> [Double]
+tiraposicoes (Mapa (a,b) c []) = [] 
+tiraposicoes (Mapa (a,b) c (bloco:blocos)) = fromIntegral (length bloco) : tiraposicoes (Mapa (a,b) c blocos) 
 
 movimenta :: Semente -> Tempo -> Jogo -> Jogo
-movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo $  pisaalcapaoEMjogo jogoexp
+movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
 
 
