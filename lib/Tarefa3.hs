@@ -12,7 +12,7 @@ import LI12324
 import Tarefa1 
 import GHC.Base (undefined)
 
-mapaTeste = Mapa ((9,6), Oeste) (13,3) matrizJogoExp
+mapaTeste = Mapa ((4,10), Oeste) (13,3) matrizJogoExp
 
 matrizJogoExp :: [[Bloco]]
 matrizJogoExp =[
@@ -44,7 +44,7 @@ jogoexp = Jogo mapaTeste inimigo colec player{posicao = pmapa, direcao = dmapa} 
 
 
 colec :: [(Colecionavel, Posicao)]
-colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(4,16)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,12)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
+colec = [(Moeda, (2,6)), (Martelo, (2,16)),(Vida,(28,12)),(Moeda, (10,15)),(Moeda, (20,12)),(Moeda, (8,7)),(Moeda, (24,6)),(Chave, (27,16)), (Porta,(12.5,2)), (Porta,(17.5,2))]
 
 inimigo :: [Personagem]
 inimigo = [Personagem {velocidade = (0,0), 
