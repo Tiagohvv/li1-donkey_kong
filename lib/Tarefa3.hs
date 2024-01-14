@@ -118,7 +118,7 @@ player = Personagem {velocidade = (0,0),
                      vida = 3,
                      pontos = 0,
                      aplicaDano = (False,0.0),                    
-                     temChave = True}
+                     temChave = False}
 
 gethitbox :: Personagem -> Hitbox 
 gethitbox l = ((fst (posicao l) - fst (tamanho l)/2, snd (posicao l) - snd (tamanho l)/2 ),(fst (posicao l) + fst(tamanho l)/2, snd (posicao l) + snd (tamanho l)/2)) 
@@ -311,8 +311,8 @@ jogadorMorre a@(Mapa (p1,p2) _ l) p | vida p == 0 = p{posicao = p1, direcao = p2
 -}
 
 -- arma o jogador se for martelo e aumenta pontos se for moeda. Desaparecem se forem recolhidos 
-armaEpontosJogadorEMjogo :: Jogo -> Jogo 
-armaEpontosJogadorEMjogo j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador (jogador j) (colecionaveis j)}
+armaEpontosJogadorEMjogo :: Tempo -> Jogo -> Jogo 
+armaEpontosJogadorEMjogo t j = j {colecionaveis = xaucolec (jogador j) (colecionaveis j), jogador = armaEpontosJogador t (jogador j) (colecionaveis j)}
 
 
 xaucolec :: Personagem -> [(Colecionavel, Posicao)] -> [(Colecionavel, Posicao)]
@@ -322,13 +322,13 @@ xaucolec j ((col,pos):cols) | (col== Porta) && (temChave j) && sobreposicao (get
                             | otherwise = (col,pos) : xaucolec j cols       
 
 
-armaEpontosJogador :: Personagem -> [(Colecionavel, Posicao)] -> Personagem 
-armaEpontosJogador j [] = j 
-armaEpontosJogador j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador (j {aplicaDano = (True, 10)}) cols
-                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador (j {pontos = (pontos j) +1}) cols 
-                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Vida) = armaEpontosJogador (j {vida = (vida j) +1}) cols 
-                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Chave) = armaEpontosJogador (j {temChave = True}) cols
-                                | otherwise = armaEpontosJogador j cols 
+armaEpontosJogador :: Tempo -> Personagem -> [(Colecionavel, Posicao)] -> Personagem 
+armaEpontosJogador t j [] = j{aplicaDano = (snd (aplicaDano j) >0,if snd (aplicaDano j )<= 0 then 0 else snd (aplicaDano j) -t)} 
+armaEpontosJogador t j (col:cols) | sobreposicao (gethitbox j) (gethitboxcol (snd col))  &&  (fst col == Martelo) = armaEpontosJogador t (j {aplicaDano = (True, 10)}) cols
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Moeda) = armaEpontosJogador t (j {pontos = (pontos j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Vida) = armaEpontosJogador t (j {vida = (vida j) +1}) cols 
+                                | sobreposicao (gethitbox j) (gethitboxcol (snd col)) &&  (fst col == Chave) = armaEpontosJogador t (j {temChave = True}) cols
+                                | otherwise = armaEpontosJogador t j cols 
 
 
 
@@ -429,6 +429,6 @@ tiraposicoes (Mapa (a,b) c []) = []
 tiraposicoes (Mapa (a,b) c (bloco:blocos)) = fromIntegral (length bloco) : tiraposicoes (Mapa (a,b) c blocos) 
 
 movimenta :: Semente -> Tempo -> Jogo -> Jogo
-movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
+movimenta x t jogoexp = temGravidadeEMjogo t $ posicaoatualizadaPerEmjogo t $ inimigomorreEMjogo $  pisaalcapaoEMjogo  $ perdevidainimigoEMjogo $ perdevidaJogadorEMjogo $ armaEpontosJogadorEMjogo t $ limitesEmJogo $ estaEmEscadaEmJogo  jogoexp
 
 
